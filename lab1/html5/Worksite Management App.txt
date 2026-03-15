@@ -1,0 +1,36 @@
+Worksite Management App / Aplicație de management al șantierelor
+
+Aplicația de management al șantierelor este o aplicație destinată organizării activităților de pe un șantier.
+Scopul ei este să ajute la gestionarea utilizatorilor, a sarcinilor, a echipelor și a progresului lucrărilor.
+
+Funcționalități principale
+
+1. Autentificare și înregistrare
+
+    creare cont
+    autentificare în aplicație
+    editarea informațiilor de profil
+
+2. Gestionarea sarcinilor
+
+    adăugare, editare și ștergere sarcini
+    atribuirea sarcinilor către muncitori
+    schimbarea statusului unei sarcini: neîncepută, în desfășurare, finalizată
+
+3. Roluri multiple
+
+    administrator
+    manager de șantier
+    muncitor
+
+4. Actualizări în timp real
+
+    actualizarea rapidă a statusului sarcinilor
+    afișarea modificărilor
+    notificarea utilizatorilor
+
+5. Monitorizare
+
+    urmărirea progresului lucrărilor
+    vizualizarea sarcinilor active și finalizate
+    evidența activității muncitorilor
