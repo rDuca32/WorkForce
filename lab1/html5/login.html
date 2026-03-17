@@ -1,36 +1,45 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkForce</title>
 </head>
+
 <body>
 
     <header>
         <nav>
-            <a href="./index.html">Acasă</a>
-            <a href="./auth.html">Autentificare</a>
-            <a href="./user.html">Profil</a>
+            <a href="index.html">Acasă</a> |
+            <a href="auth.html">Autentificare</a> |
+            <a href="tasks.html">Sarcini</a> |
+            <a href="monitoring.html">Monitorizare</a> |
+            <a href="users.html">Utilizatori</a>
         </nav>
     </header>
 
-    Conectare
-    
-    <form>
-        <input type="text" placeholder="Numele de utilizator">
-        <br>
-        <input type="password" placeholder="Parola">
-        <br>
+    <main>
+        Conectare
 
-        <button>Conectare</button>
-    </form>
+        <form>
+            <label for="username">Nume de utilizator:</label>
+            <input id="username" type="text" placeholder="Nume de utilizator">
+            <br>
+            <label for="password">Parolă:</label>
+            <input id="password" type="password" placeholder="Parolă">
+            <br>
+
+            <button>Conectare</button>
+        </form>
+    </main>
 
     <hr>
 
     <footer>
-        <p>&copy 2026. All rights reserved.</p>
+        <p>&copy; 2026 WorkForce. Toate drepturile rezervate.</p>
     </footer>
 
 </body>
+
 </html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <title>WorkForce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="Aplicație destinată managerilor de șantiere">
+</head>
+
+<body>
+
+    <div align="center">
+        <a href="index.html">Acasă</a> |
+        <a href="auth.html">Autentificare</a> |
+        <a href="tasks.html">Sarcini</a> |
+        <a href="monitoring.html">Monitorizare</a> |
+        <a href="users.html">Utilizatori</a>
+    </div>
+
+    <div align="center">
+
+        <h2>Înregistrare</h2>
+
+        <form name="register_form" action="#" method="post">
+            <fieldset>
+                <legend>Date personale</legend>
+
+                <label for="email">Email:</label>
+                <input id="email" type="text" name="email" size="30" maxlength="50" value="">
+                <br>
+                <label for="phone">Telefon:</label>
+                <input id="phone" type="text" name="phone" size="30" maxlength="50" value="">
+                <br>
+                <label for="address">Adresă:</label>
+                <input id="address" type="text" name="address" size="50" maxlength="100" value="">
+                <br>
+                <label for="username">Nume de utilizator:</label>
+                <input id="username" type="text" name="username" size="30" maxlength="50" value="">
+                <br>
+                <label for="password">Parolă:</label>
+                <input id="password" type="password" name="password" size="30" maxlength="50" value="">
+                <br>
+                <label for="password_confirmation">Confirmare parolă:</label>
+                <input id="password_confirmation" type="password" size="30" name="password_confirmation" maxlength="50"
+                    value="">
+
+            </fieldset>
+
+            <br>
+
+            <fieldset>
+                <legend>Alte informații</legend>
+
+                <label for="date">Data nașterii:</label>
+                <input id="date" type="text">
+                <br>
+                <label for="age">Vârstă:</label>
+                <input id="age" type="text">
+                <br>
+                <label for="photo">Poză de profil:</label>
+                <input id="photo" type="file">
+                <br>
+                <label for="country">Țară:</label>
+                <input id="country" type="text" value="România">
+                <br>
+
+                <label>Oraș:</label>
+                <select name="oras">
+                    <option value="Cluj-Napoca">Cluj-Napoca</option>
+                    <option value="București">București</option>
+                    <option value="Bistrița">Bistrița</option>
+                    <option value="Brașov">Brașov</option>
+                </select>
+
+                <br>
+
+                <label>Genul:</label>
+                <select name="gen">
+                    <option>Niciunul</option>
+                    <option>Masculin</option>
+                    <option>Feminin</option>
+                </select>
+                <br>
+
+            </fieldset>
+
+            <label>
+                <input type="checkbox" name="confirmare">
+                Confirmare
+            </label>
+
+            <p>Doriți notificări?</p>
+
+            <label>
+                <input type="radio" name="notificari" value="da"> DA
+            </label>
+
+            <label>
+                <input type="radio" name="notificari" value="nu"> NU
+            </label>
+
+            <br>
+            <br>
+
+            <label>Inregistrându-vă înseamnă că sunteți de acord cu termenii și condițiile</label>
+
+            <br>
+            <br>
+
+            <input type="submit" value="Inregistrare">
+        </form>
+
+    </div>
+
+    <hr>
+
+    <div align="center">
+        <p>&copy; 2026 WorkForce. Toate drepturile rezervate.</p>
+    </div>
+
+</body>
+
+</html>
