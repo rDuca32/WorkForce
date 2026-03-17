@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ro">
 
 <head>
@@ -25,40 +26,40 @@
 
         <form>
             <label for="email">Email:</label>
-            <input id="email" name="email" type="email" placeholder="Email">
+            <input id="email" type="email" name="email" placeholder="Email">
             <br>
             <label for="phone">Telefon:</label>
-            <input id="phone" type="tel" placeholder="Telefon">
+            <input id="phone" type="tel" name="phone" placeholder="Telefon">
             <br>
             <label for="address">Adresă</label>
-            <input id="address" type="text" placeholder="Adresă">
+            <input id="address" type="text" name="address" placeholder="Adresă">
             <br>
             <label for="username">Nume de utilizator:</label>
-            <input id="username" type="text" placeholder="Nume de utilizator">
+            <input id="username" type="text" name="username" placeholder="Nume de utilizator">
             <br>
             <label for="password">Parolă:</label>
-            <input id="password" type="password" placeholder="Parolă">
+            <input id="password" type="password" name="password" placeholder="Parolă">
             <br>
             <label for="password_confirmation">Confirmare parolă:</label>
-            <input id="password_confirmation" type="password" placeholder="Confirmare parolă">
+            <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirmare parolă">
             <br>
             <label for="date">Data nașterii:</label>
-            <input id="date" type="date">
+            <input id="date" type="date" name="date">
             <br>
             <label for="age">Vârstă:</label>
-            <input id="age" type="number" placeholder="Vârstă" min="18" max="70" step="1">
+            <input id="age" type="number" name="age" placeholder="Vârstă" min="18" max="70" step="1">
             <br>
             <label for="photo">Poză de profil:</label>
-            <input id="photo" type="file">
+            <input id="photo" type="file" name="photo">
             <br>
             <label for="country">Țară:</label>
-            <input id="country" type="text" value="România" readonly>
+            <input id="country" type="text" name="country" value="România" readonly>
             <br>
 
             <label for="city">Oraș:</label>
-            <input id="city" list="orase" name="oras">
+            <input id="city" list="cities" name="city">
 
-            <datalist id="orase">
+            <datalist id="cities">
                 <option value="Cluj-Napoca">
                 <option value="București">
                 <option value="Bistrița">
@@ -68,7 +69,7 @@
             <br>
 
             <label>Genul:</label>
-            <select name="Gen">
+            <select name="gender">
                 <option>Niciunul</option>
                 <option>Masculin</option>
                 <option>Feminin</option>
@@ -83,11 +84,11 @@
             <p>Doriți notificări?</p>
 
             <label>
-                <input type="radio" name="notificari" value="da"> DA
+                <input type="radio" name="notificari" value="yes"> DA
             </label>
 
             <label>
-                <input type="radio" name="notificari" value="nu"> NU
+                <input type="radio" name="notificari" value="no"> NU
             </label>
 
             <br>

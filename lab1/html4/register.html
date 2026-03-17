@@ -8,7 +8,7 @@
     <meta name="description" content="Aplicație destinată managerilor de șantiere">
 </head>
 
-<body>
+<body bgcolor="white">
 
     <div align="center">
         <a href="index.html">Acasă</a> |
@@ -24,45 +24,51 @@
 
         <form name="register_form" action="#" method="post">
             <fieldset>
+
                 <legend>Date personale</legend>
 
                 <label for="email">Email:</label>
                 <input id="email" type="text" name="email" size="30" maxlength="50" value="">
                 <br>
+
                 <label for="phone">Telefon:</label>
                 <input id="phone" type="text" name="phone" size="30" maxlength="50" value="">
                 <br>
+
                 <label for="address">Adresă:</label>
                 <input id="address" type="text" name="address" size="50" maxlength="100" value="">
                 <br>
+
                 <label for="username">Nume de utilizator:</label>
                 <input id="username" type="text" name="username" size="30" maxlength="50" value="">
                 <br>
+
                 <label for="password">Parolă:</label>
                 <input id="password" type="password" name="password" size="30" maxlength="50" value="">
                 <br>
+
                 <label for="password_confirmation">Confirmare parolă:</label>
-                <input id="password_confirmation" type="password" size="30" name="password_confirmation" maxlength="50"
-                    value="">
+                <input id="password_confirmation" type="password" size="30" name="password_confirmation" maxlength="50" value="">
 
             </fieldset>
 
             <br>
 
             <fieldset>
+
                 <legend>Alte informații</legend>
 
                 <label for="date">Data nașterii:</label>
-                <input id="date" type="text">
+                <input id="date" type="text" name="date">
                 <br>
                 <label for="age">Vârstă:</label>
-                <input id="age" type="text">
+                <input id="age" type="text" name="age">
                 <br>
                 <label for="photo">Poză de profil:</label>
-                <input id="photo" type="file">
+                <input id="photo" type="file" name="photo">
                 <br>
                 <label for="country">Țară:</label>
-                <input id="country" type="text" value="România">
+                <input id="country" type="text" name="country" value="România">
                 <br>
 
                 <label>Oraș:</label>
@@ -72,14 +78,13 @@
                     <option value="Bistrița">Bistrița</option>
                     <option value="Brașov">Brașov</option>
                 </select>
-
                 <br>
 
                 <label>Genul:</label>
                 <select name="gen">
-                    <option>Niciunul</option>
-                    <option>Masculin</option>
-                    <option>Feminin</option>
+                    <option value="none">Niciunul</option>
+                    <option value="m">Masculin</option>
+                    <option value="f">Feminin</option>
                 </select>
                 <br>
 
@@ -93,11 +98,13 @@
             <p>Doriți notificări?</p>
 
             <label>
-                <input type="radio" name="notificari" value="da"> DA
+                DA
+                <input type="radio" name="notificari" value="da"> 
             </label>
 
             <label>
-                <input type="radio" name="notificari" value="nu"> NU
+                NU
+                <input type="radio" name="notificari" value="nu"> 
             </label>
 
             <br>
