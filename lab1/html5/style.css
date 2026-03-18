@@ -9,17 +9,17 @@ body {
     height: 100%;
     width: 100%;
     background: white;
-    margin: auto auto;
 }
 
 body {
+    margin: 0;
+    font-family: Arial, sans-serif;
     /* background-image: url("../assets/logo.jpg"); */
 }
 
 header {
     background: darkolivegreen;
     background: linear-gradient(90deg, rgb(34, 137, 29) 0%, rgba(87, 199, 133, 1) 50%, rgb(156, 184, 29) 100%);
-    align-content: center;
     width: 100%;
     position: fixed;
     top: 0px;
@@ -27,15 +27,14 @@ header {
 
 nav {
     text-align: center;
-    align-content: center;
     width: 100%;
     padding: 20px;
     border: 1px solid darkgreen;
 }
 
 main{
-    margin-top: 25px;
-    padding: 50px;
+    margin-top: 50px;
+    padding: 50px 50px 50px;
     height: auto;
 }
 
@@ -46,8 +45,7 @@ footer {
     text-align: center;
     width: 100%;
     border: 1px solid black;
-    padding: 10px;  
-    bottom: 0px;
+    padding: 10px;
 }
 
 h1 {
@@ -58,23 +56,39 @@ figcaption {
     font-family: 'Courier New', Courier, monospace;
 }
 
-table,
-th,
-td,
-tr {
-    /*
-    justify-content: center;
-    align-content: center;
-    justify-items: center;
-    align-items: center;
-    */
-    border: 0.5px solid black;
-    table-layout: fixed;
-    min-width: 100%;
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .tables {
+    display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
     width: 100%;
 }
+
+nav a{
+    text-decoration: none;
+    color: black;
+    margin: 0 10px;
+}
+
+nav a:hover{
+    color: white;
+}
+
+.auth{
+    text-align: center;
+}
+
+.login_form, .register_form{
+    text-align: center;
+}
+
