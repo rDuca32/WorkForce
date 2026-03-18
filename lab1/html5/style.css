@@ -1,0 +1,80 @@
+/* Meniul 4 */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    background: white;
+    margin: auto auto;
+}
+
+body {
+    /* background-image: url("../assets/logo.jpg"); */
+}
+
+header {
+    background: darkolivegreen;
+    background: linear-gradient(90deg, rgb(34, 137, 29) 0%, rgba(87, 199, 133, 1) 50%, rgb(156, 184, 29) 100%);
+    align-content: center;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+}
+
+nav {
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid darkgreen;
+}
+
+main{
+    margin-top: 25px;
+    padding: 50px;
+    height: auto;
+}
+
+footer {
+    background: grey;
+    background: linear-gradient(90deg, rgb(74, 88, 88) 0%, rgb(111, 130, 119) 50%, rgb(203, 207, 185) 100%);
+    align-content: center;
+    text-align: center;
+    width: 100%;
+    border: 1px solid black;
+    padding: 10px;  
+    bottom: 0px;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+figcaption {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+table,
+th,
+td,
+tr {
+    /*
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    */
+    border: 0.5px solid black;
+    table-layout: fixed;
+    min-width: 100%;
+}
+
+.tables {
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+}
