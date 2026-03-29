@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkForce</title>
-    <link rel="icon" href="../assets/logo.jpg">
+    <link rel="icon" href="../assets/logo.png">
     <link rel="stylesheet" href="./style.css">
     <meta name="description" content="Aplicație destinată managerilor de șantiere">
 </head>
@@ -15,11 +15,30 @@
 
     <header>
         <nav>
-            <a class="navigation" href="index.html">Acasă</a> |
-            <a class="navigation" href="auth.html">Autentificare</a> |
-            <a class="navigation" href="tasks.html">Sarcini</a> |
-            <a class="navigation" href="monitoring.html">Monitorizare</a> |
-            <a class="navigation" href="users.html">Utilizatori</a>
+            <img class="logo" src="../assets/logo.png">
+            <ul class="menu">
+                <li><a href="index.html">Acasă</a></li>
+
+                <li>
+                    <a href="auth.html">Autentificare</a>
+                    <ul class="submenu">
+                        <li><a href="login.html">Conectare</a></li>
+                        <li><a href="register.html">Înregistrare</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="tasks.html">Sarcini</a></li>
+
+                <li>
+                    <a href="monitoring.html">Monitorizare</a>
+                    <ul class="submenu">
+                        <li><a href="#">Șantiere</a></li>
+                        <li><a href="#">Progres</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="users.html">Utilizatori</a></li>
+            </ul>
         </nav>
     </header>
 

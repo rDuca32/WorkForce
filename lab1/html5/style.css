@@ -1,11 +1,17 @@
-/* Meniul 4 */
+/* Variables */
+
+:root {
+    --primary-color: darkgreen;
+    --secondary-color: lightgreen;
+}
+
+/* Basics */
 
 * {
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     height: 100%;
     width: 100%;
     background: white;
@@ -14,47 +20,73 @@ body {
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    /* background-image: url("../assets/logo.jpg"); */
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
+/* Logo */
+
+.logo {
+    width: 100px;
+    height: auto;
+    z-index: 2;
+
+    transition: transform 0.3s ease;
+}
+
+.logo:hover{
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Layout */
+
 header {
-    background: darkolivegreen;
-    background: linear-gradient(90deg, rgb(34, 137, 29) 0%, rgba(87, 199, 133, 1) 50%, rgb(156, 184, 29) 100%);
-    width: 100%;
     position: fixed;
-    top: 0px;
+    top: 0;
+    width: 100%;
+
+    background: linear-gradient(90deg, rgb(34, 137, 29) 0%, rgba(87, 199, 133, 1) 50%, rgb(156, 184, 29) 100%);
 }
 
 nav {
-    text-align: center;
     width: 100%;
     padding: 20px;
-    border: 1px solid darkgreen;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    border: 1px solid var(--primary-color);
 }
 
-main{
-    margin-top: 50px;
-    padding: 50px 50px 50px;
-    height: auto;
+main {
+    flex: 1;
+    margin-top: 100px;
+    padding: 50px;
 }
 
 footer {
-    background: grey;
-    background: linear-gradient(90deg, rgb(74, 88, 88) 0%, rgb(111, 130, 119) 50%, rgb(203, 207, 185) 100%);
-    align-content: center;
-    text-align: center;
     width: 100%;
-    border: 1px solid black;
     padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+
+    background: linear-gradient(90deg, rgb(74, 88, 88) 0%, rgb(111, 130, 119) 50%, rgb(203, 207, 185) 100%);
 }
+
+/* Typo */
 
 h1 {
     font-size: 50px;
 }
 
 figcaption {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
 }
+
+/* Tables */
 
 table {
     width: 100%;
@@ -69,26 +101,139 @@ th, td {
 
 .tables {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     width: 100%;
 }
 
-nav a{
+/* Links */
+
+nav a {
+    margin: 0 10px;
     text-decoration: none;
     color: black;
-    margin: 0 10px;
 }
 
-nav a:hover{
+nav a:hover {
     color: white;
 }
 
-.auth{
+/* Forms */
+
+.auth, .login_form, .register_form {
     text-align: center;
 }
 
-.login_form, .register_form{
-    text-align: center;
+input, textarea, select {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid gray;
 }
 
+button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+
+    color: black;
+    background: var(--secondary-color);
+}
+
+button:hover {
+    background: greenyellow;
+}
+
+/*  Menu (4) */
+
+.menu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    position: relative;
+}
+
+.menu a {
+    display: block;
+    padding: 15px 25px;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background-color: green;
+}
+
+/* Submenu */
+
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    background: rgb(112, 197, 112);
+    border: 1px solid var(--primary-color);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50px);
+    transition: all 0.3s ease;
+}
+
+.submenu li {
+    display: block;
+}
+
+.submenu a {
+    padding: 10px 20px;
+}
+
+.menu li:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .menu {
+        text-align: center;
+    }
+
+    .menu li {
+        display: block;
+    }
+
+    main {
+        margin-top: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 30px;
+    }
+
+    main {
+        padding: 20px;
+        margin-top: 300px;
+    }
+}
