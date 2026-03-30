@@ -8,6 +8,7 @@
     <title>WorkForce</title>
     <link rel="icon" href="../assets/logo.png">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="description" content="Aplicație destinată managerilor de șantiere">
 </head>
 
@@ -44,97 +45,187 @@
 
     <main class="tables">
 
-        <table>
-            <tr>
-                <th rowspan="2">NR.</th>
-                <th rowspan="2">Șantier</th>
-                <th rowspan="2">Locație</th>
-                <th colspan="2">Detalii</th>
-            </tr>
-            <tr>
-                <th>Echipe</th>
-                <th>Sarcini</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Kaufland</td>
-                <td>Bistrița</td>
+        <div style="width: 100%;">
 
-                <td>
-                    <table>
-                        <tr>
-                            <th>Echipa</th>
-                            <th>Nr. muncitori</th>
-                        </tr>
-                        <tr>
-                            <td>Echipa A</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <td>Echipa B</td>
-                            <td>3</td>
-                        </tr>
-                    </table>
-                </td>
+            <table class="main-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">NR.</th>
+                        <th rowspan="2">Șantier</th>
+                        <th rowspan="2">Locație</th>
+                        <th colspan="2">Detalii</th>
+                    </tr>
+                    <tr>
+                        <th>Echipe</th>
+                        <th>Sarcini</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="has-tooltip">
+                            Kaufland
+                            <div class="tooltip">
+                                <b>Kaufland Bistrița</b><br>
+                                Suprafață: 2500 mp<br>
+                                Start: Ian 2026<br>
+                                Manager: Pop Ioan
+                            </div>
+                        </td>
+                        <td class="has-tooltip">
+                            Bistrița
+                            <div class="tooltip">
+                                <b>Bistrița, Romania</b><br>
+                                Jud. Bistrița-Năsăud<br>
+                                Distanță față de sediu: 92 km
+                            </div>
+                        </td>
 
-                <td>
-                    <table>
-                        <tr>
-                            <th>Sarcina</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>Turnat fundația</td>
-                            <td>Finalizată</td>
-                        </tr>
-                        <tr>
-                            <td>Tencuit pereții</td>
-                            <td>În lucru</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+                        <td>
+                            <table class="inner-table">
+                                <tr>
+                                    <th>Echipa</th>
+                                    <th>Nr. muncitori</th>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Echipa A
+                                        <div class="tooltip">
+                                            Specializare: Structuri<br>
+                                            Șef echipă: Ionescu M.
+                                        </div>
+                                    </td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Echipa B
+                                        <div class="tooltip">
+                                            Specializare: Finisaje<br>
+                                            Șef echipă: Popa G.
+                                        </div>
+                                    </td>
+                                    <td>3</td>
+                                </tr>
+                            </table>
+                        </td>
 
-            <tr>
-                <td>2</td>
-                <td>Lidl</td>
-                <td>Cluj</td>
+                        <td>
+                            <table class="inner-table">
+                                <tr>
+                                    <th>Sarcina</th>
+                                    <th>Status</th>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Turnat fundația
+                                        <div class="tooltip">
+                                            Termen: 15 Feb 2026<br>
+                                            Responsabil: Echipa A<br>
+                                            Materiale: Beton C25
+                                        </div>
+                                    </td>
+                                    <td>Finalizată</td>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Tencuit pereții
+                                        <div class="tooltip">
+                                            Termen: 10 Apr 2026<br>
+                                            Responsabil: Echipa B<br>
+                                            Progres: 60%
+                                        </div>
+                                    </td>
+                                    <td>În lucru</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-                <td>
-                    <table>
-                        <tr>
-                            <th>Echipa</th>
-                            <th>Nr. muncitori</th>
-                        </tr>
-                        <tr>
-                            <td>Echipa C</td>
-                            <td>4</td>
-                        </tr>
-                        <tr>
-                            <td>Echipa D</td>
-                            <td>4</td>
-                        </tr>
-                    </table>
-                </td>
+                    <tr>
+                        <td>2</td>
+                        <td class="has-tooltip">
+                            Lidl
+                            <div class="tooltip">
+                                <b>Lidl Cluj-Napoca</b><br>
+                                Suprafață: 1800 m²<br>
+                                Start: Mar 2026<br>
+                                Manager: Pop Ioan
+                            </div>
+                        </td>
+                        <td class="has-tooltip">
+                            Cluj
+                            <div class="tooltip">
+                                <b>Cluj-Napoca, Romania</b><br>
+                                Jud. Cluj<br>
+                                Distanță față de sediu: 0 km
+                            </div>
+                        </td>
 
-                <td>
-                    <table>
-                        <tr>
-                            <th>Sarcina</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>Instalație electrică</td>
-                            <td>Neîncepută</td>
-                        </tr>
-                        <tr>
-                            <td>Instalație gaz</td>
-                            <td>Neîncepută</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                        <td>
+                            <table class="inner-table">
+                                <tr>
+                                    <th>Echipa</th>
+                                    <th>Nr. muncitori</th>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Echipa C
+                                        <div class="tooltip">
+                                            Specializare: Instalații<br>
+                                            Șef echipă: Mureșan V.
+                                        </div>
+                                    </td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Echipa D
+                                        <div class="tooltip">
+                                            Specializare: Gaz & Termice<br>
+                                            Șef echipă: Dragoș R.
+                                        </div>
+                                    </td>
+                                    <td>4</td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td>
+                            <table class="inner-table">
+                                <tr>
+                                    <th>Sarcina</th>
+                                    <th>Status</th>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Instalație electrică
+                                        <div class="tooltip">
+                                            Termen: 1 Mai 2026<br>
+                                            Responsabil: Echipa C<br>
+                                            Tip: Trifazic 380V
+                                        </div>
+                                    </td>
+                                    <td>Neîncepută</td>
+                                </tr>
+                                <tr>
+                                    <td class="has-tooltip">
+                                        Instalație gaz
+                                        <div class="tooltip">
+                                            Termen: 15 Mai 2026<br>
+                                            Responsabil: Echipa D<br>
+                                            Presiune: 6 bar
+                                        </div>
+                                    </td>
+                                    <td>Neîncepută</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
 
     </main>
 
