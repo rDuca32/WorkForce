@@ -189,11 +189,33 @@ button:hover {
     padding: 20px;
     font-weight: bold;
     text-decoration: none;
-    transition: background-color 2s ease;
+    color: black;
+    position: relative;
+    transition: color var(--transition-speed) ease;
 }
 
 .menu a:hover {
     background-color: var(--primary-color);
+}
+
+.menu a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 4px;
+    background-color: var(--white);
+    transform: translateX(-50%);
+    transition: width 2s ease;
+}
+
+.menu a:hover::after {
+    width: 100%;
+}
+
+.menu li, .submenu li {
+    margin-bottom: 0;
 }
 
 /* Submenu */
@@ -219,8 +241,10 @@ button:hover {
 }
 
 .submenu a {
-    padding: 20px;
+    display: block;
+    padding: 15px;
     color: black;
+    width: 100%;
 }
 
 .menu li:hover .submenu {
@@ -231,8 +255,12 @@ button:hover {
 
 /* Slider */
 
-.slide-section {
+.slider-section {
     margin: 50px 0;
+}
+
+.slider-section h2 {
+    text-align: center;
 }
 
 .slider {
@@ -377,6 +405,14 @@ button:hover {
     opacity: 0.75;
     text-align: center;
     font-weight: bold;
+}
+
+.stats-overview {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
 /* Tooltip */
@@ -529,6 +565,12 @@ th, td {
     color: gray;
 }
 
+.card-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
 /* Responsive */
 
 @media (max-width: 900px) {
@@ -600,5 +642,9 @@ th, td {
 
     .slider-main {
         height: 200px;
+    }
+
+    label {
+        font-size: 15px;
     }
 }

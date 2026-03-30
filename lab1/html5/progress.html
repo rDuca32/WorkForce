@@ -34,7 +34,7 @@
                     <a href="monitoring.html">Monitorizare</a>
                     <ul class="submenu">
                         <li><a href="worksites.html">Șantiere</a></li>
-                        <li><a href="#">Progres</a></li>
+                        <li><a href="progress.html">Progres</a></li>
                     </ul>
                 </li>
 
@@ -44,19 +44,49 @@
     </header>
 
     <main>
+        <section class="stats-overview">
+            <div class="stat-item"><b>12</b> Sarcini Active</div>
+            <div class="stat-item"><b>85%</b> Progres Total</div>
+            <div class="stat-item"><b>2</b> Întârzieri</div>
+        </section>
 
-        <div class="auth">
-            <h1>Autentificare</h1>
+        <div class="task-grid">
 
-            <p>Ai cont? <a href="./login.html">Conectare</a></p>
-            <p>Vrei un cont? <a href="./register.html">Înregistrare</a></p>
+            <article class="card priority-high">
+                <div class="card-tag">Urgent</div>
+                <h2>Fundație Bloc A</h2>
+                <p>Turnare placă beton peste cota zero.</p>
+                <div class="progress-wrapper">
+                    <div class="progress-bar" style="width: 85%;"></div>
+                </div>
+                <div class="card-meta">
+                    <span>15 Feb 2026</span>
+                    <strong>Echipa A</strong>
+                </div>
+                <p>Ultima actualizare: Astăzi, 09:00</p>
+            </article>
+
+            <article class="card">
+                <div class="card-tag">Normal</div>
+                <h2>Instalații Termice</h2>
+                <p>Montare coloane principale de încălzire.</p>
+                <div class="progress-wrapper">
+                    <div class="progress-bar" style="width: 40%;"></div>
+                </div>
+                <div class="card-meta">
+                    <span>22 Feb 2026</span>
+                    <strong>Echipa B</strong>
+                </div>
+                <p>Ultima actualizare: Ieri, 12:00</p>
+            </article>
+
         </div>
-
     </main>
 
     <footer>
         <p>&copy; 2026 WorkForce. Toate drepturile rezervate.</p>
     </footer>
+
 </body>
 
 </html>
