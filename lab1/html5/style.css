@@ -206,14 +206,14 @@ form textarea {
     font-size: 20px;
 }
 
-.auth>p>a{
+.auth>p>a {
     text-decoration: none;
     color: var(--secondary-color);
     padding: 5px;
     transition: color var(--transition-speed) ease;
 }
 
-.auth>p>a:hover{
+.auth>p>a:hover {
     color: var(--primary-color);
 }
 
@@ -527,6 +527,7 @@ button:hover {
 .has-tooltip {
     position: relative;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .has-tooltip::after {
@@ -618,6 +619,16 @@ th, td {
     max-width: 1000px;
     margin: 0 auto;
     overflow-x: auto;
+}
+
+.table-img {
+    height: 50px;
+    width: 50px;
+    vertical-align: middle;
+    margin-right: 10px;
+    object-fit: cover;
+    border-radius: 5px;
+    min-width: 50px;
 }
 
 /* Cards */
@@ -759,6 +770,14 @@ th, td {
 
     aside {
         width: 100%;
+    }
+
+    .table-img {
+        height: 25px;
+        width: 25px;
+        min-width: 25px;
+        object-fit: cover;
+        border-radius: 5px;
     }
 }
 
