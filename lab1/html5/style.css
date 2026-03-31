@@ -178,9 +178,38 @@ nav a:hover {
     color: white;
 }
 
+.progress-links {
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px gray;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    align-content: center;
+    align-items: center;
+}
+
+.progress-links>a {
+    text-align: center;
+    text-decoration: none;
+    background-color: var(--secondary-color);
+    color: black;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid gray;
+    transition: all var(--transition-speed) ease;
+    width: 50%;
+}
+
+.progress-links>a:hover {
+    color: gray;
+    background-color: greenyellow;
+}
+
 /* Forms */
 
-.auth, form {
+form, .auth {
     background: white;
     padding: 30px;
     border-radius: 10px;
