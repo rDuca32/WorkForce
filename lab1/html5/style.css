@@ -325,6 +325,14 @@ button:hover {
     margin-bottom: 0;
 }
 
+.menu-icon {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15px;
+}
+
 /* Submenu */
 
 .submenu {
@@ -778,6 +786,10 @@ th, td {
         min-width: 25px;
         object-fit: cover;
         border-radius: 5px;
+    }
+
+    .menu-icon {
+        bottom: 0px;
     }
 }
 
