@@ -4,7 +4,7 @@
     --primary-color: darkgreen;
     --secondary-color: lightgreen;
     --primary-gradient: linear-gradient(90deg, #1b5e20 0%, #4caf50 50%, #81c784 100%);
-    --bg-color: #f4f7f6;
+    --bg-color: whitesmoke;
     --text-color: #333333;
     --white: #ffffff;
     --transition-speed: 0.3s;
@@ -31,6 +31,11 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 /* Layout */
@@ -67,6 +72,49 @@ footer {
     color: var(--white);
     background: linear-gradient(90deg, rgb(74, 88, 88) 0%, rgb(111, 130, 119) 50%, rgb(203, 207, 185) 100%);
 }
+
+section:has(article) {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+    background: lightgray;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.05);
+}
+
+section {
+    margin-bottom: 50px;
+}
+
+article {
+    flex: 2;
+}
+
+aside {
+    flex: 1;
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+figure {
+    padding: 10px;
+}
+
+main>section>ol {
+    gap: 5px;
+    padding-left: 10px;
+}
+
+main>section>ol>li {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
 
 /* Logo */
 
@@ -111,6 +159,15 @@ figcaption {
     margin-bottom: 20px;
 }
 
+.roles-list {
+    width: fit-content;
+    margin: 50px auto;
+    padding: 20px;
+
+    border-radius: 10px;
+    box-shadow: 0 5px 10px gray;
+}
+
 /* Links */
 
 nav a {
@@ -123,8 +180,41 @@ nav a:hover {
 
 /* Forms */
 
+.auth, form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px gray;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    align-content: center;
+}
+
+form textarea {
+    width: 100%;
+    resize: vertical;
+}
+
 .auth, .login_form, .register_form {
     text-align: center;
+    margin: 0 auto;
+}
+
+.auth {
+    margin: 50px auto;
+    font-size: 20px;
+}
+
+.auth>p>a{
+    text-decoration: none;
+    color: var(--secondary-color);
+    padding: 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.auth>p>a:hover{
+    color: var(--primary-color);
 }
 
 #username, #password {
@@ -165,6 +255,23 @@ button {
 
 button:hover {
     background: greenyellow;
+}
+
+.btn-youtube {
+    display: inline-block;
+    background-color: green;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    text-decoration: none;
+    margin: 30px 0;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.btn-youtube:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--secondary-color);
+    color: white;
 }
 
 /* Menu (4) */
@@ -409,7 +516,7 @@ button:hover {
 
 .stats-overview {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
     margin-bottom: 30px;
@@ -506,6 +613,13 @@ th, td {
     background: rgba(0, 0, 0, 0.05);
 }
 
+.users-and-roles {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
 /* Cards */
 
 .task-grid {
@@ -576,7 +690,7 @@ th, td {
 @media (max-width: 900px) {
 
     header {
-        position: static; 
+        position: static;
     }
 
     nav {
@@ -621,19 +735,33 @@ th, td {
 
     main {
         margin-top: 0;
-        padding: 20px; 
+        padding: 20px;
     }
 
     .slider-main {
         height: 300px;
     }
 
-    table, .main-table {
+    table {
+        white-space: nowrap;
+    }
+
+    .main-table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
+
+    section:has(article) {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    aside {
+        width: 100%;
+    }
 }
+
 
 @media (max-width: 480px) {
     h1 {
@@ -646,5 +774,17 @@ th, td {
 
     label {
         font-size: 15px;
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    form {
+        padding: 20px 15px;
+    }
+
+    .card {
+        padding: 15px;
     }
 }
