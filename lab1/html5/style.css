@@ -4,6 +4,7 @@
     --primary-color: darkgreen;
     --secondary-color: lightgreen;
     --primary-gradient: linear-gradient(90deg, #1b5e20 0%, #4caf50 50%, #81c784 100%);
+    --secondary-gradient: linear-gradient(90deg, rgb(74, 88, 88) 0%, rgb(111, 130, 119) 50%, rgb(203, 207, 185) 100%);
     --bg-color: whitesmoke;
     --text-color: #333333;
     --white: #ffffff;
@@ -50,7 +51,6 @@ header {
 
 nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 15px 50px;
 }
@@ -70,21 +70,20 @@ footer {
     padding: 15px;
     text-align: center;
     color: var(--white);
-    background: linear-gradient(90deg, rgb(74, 88, 88) 0%, rgb(111, 130, 119) 50%, rgb(203, 207, 185) 100%);
+    background: var(--secondary-gradient)
+}
+
+section {
+    margin-bottom: 50px;
 }
 
 section:has(article) {
     display: flex;
     gap: 50px;
-    align-items: flex-start;
     background: lightgray;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.05);
-}
-
-section {
-    margin-bottom: 50px;
+    box-shadow: 0 5px 7px gray;
 }
 
 article {
@@ -186,7 +185,6 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     max-width: 500px;
-    align-content: center;
     align-items: center;
 }
 
@@ -226,13 +224,13 @@ form textarea {
 }
 
 .auth, .login_form, .register_form {
-    text-align: center;
     margin: 0 auto;
 }
 
 .auth {
     margin: 50px auto;
     font-size: 20px;
+    text-align: center;
 }
 
 .auth>p>a {
@@ -261,15 +259,15 @@ label {
 }
 
 input, textarea, select {
-    margin: 5px;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid gray;
-    transition: border-color var(--transition-speed);
+    transition: all var(--transition-speed);
 }
 
 input:focus, textarea:focus, select:focus {
     border-color: var(--primary-color);
+    box-shadow: 0px 3px 7px gray;
 }
 
 button {
@@ -279,7 +277,7 @@ button {
     font-weight: bold;
     color: black;
     background: var(--secondary-color);
-    transition: var(--transition-speed);
+    transition: all var(--transition-speed);
 }
 
 button:hover {
@@ -294,7 +292,7 @@ button:hover {
     border-radius: 15px;
     text-decoration: none;
     margin: 30px 0;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    transition: all var(--transition-speed);
 }
 
 .btn-youtube:hover {
@@ -343,7 +341,7 @@ button:hover {
     height: 4px;
     background-color: var(--white);
     transform: translateX(-50%);
-    transition: width 2s ease;
+    transition: all 2s ease;
 }
 
 .menu a:hover::after {
@@ -371,13 +369,14 @@ button:hover {
     right: 0;
     margin: 0;
     padding: 0;
-    border: 0;
+    border: 1px solid green;
     list-style: none;
-    background: rgb(112, 197, 112);
+    background: var(--primary-gradient);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all var(--transition-speed) ease;
+    text-align: center;
 }
 
 .submenu li {
@@ -431,8 +430,8 @@ button:hover {
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity var(--transition-speed) ease;
-    scroll-margin-top: 150px;
+    transition: all var(--transition-speed) ease;
+    scroll-margin-top: 200px;
 }
 
 .slide:first-child {
@@ -490,7 +489,7 @@ button:hover {
     width: 150px;
     height: 75px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .thumbnail-link span {
@@ -499,9 +498,9 @@ button:hover {
 }
 
 .thumbnail-link:hover {
-    border-color: var(--primary-color);
+    border-color: gray;
     transform: translateY(-5px);
-    box-shadow: 0 5px 10px var(--secondary-color);
+    box-shadow: 0 5px 10px gray;
 }
 
 /* Stats */
@@ -527,10 +526,10 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     background-color: var(--white);
     box-shadow: 0 5px 10px gray;
-    transition: transform var(--transition-speed);
+    transition: all var(--transition-speed) ease;
 }
 
 .stat-item:hover {
@@ -540,12 +539,11 @@ button:hover {
 .stat-number {
     font-size: 30px;
     font-weight: bold;
-    line-height: 1;
     color: var(--primary-color);
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 13px;
     opacity: 0.75;
     text-align: center;
     font-weight: bold;
@@ -563,7 +561,6 @@ button:hover {
 
 .has-tooltip {
     position: relative;
-    cursor: pointer;
     white-space: nowrap;
 }
 
@@ -580,7 +577,7 @@ button:hover {
 .tooltip {
     position: absolute;
     left: 50%;
-    bottom: calc(100% + 8px);
+    bottom: calc(100% + 5px);
     transform: translateX(-50%);
     background: #1a3a1a;
     color: white;
@@ -592,14 +589,12 @@ button:hover {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: transform var(--transition-speed) ease;
-    transform: translateX(-50%) translateY(5px);
+    transition: all var(--transition-speed) ease;
 }
 
 .has-tooltip:hover .tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
 }
 
 /* Tables */
@@ -680,10 +675,9 @@ th, td {
 .card {
     background: var(--white);
     border: 1px solid gray;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 25px;
-    flex: 1 1 300px;
-    transition: box-shadow var(--transition-speed) ease, transform var(--transition-speed) ease;
+    transition: all var(--transition-speed) ease;
 }
 
 .card:hover {
