@@ -281,6 +281,20 @@ button:hover {
     transform: translateY(-3px);
 }
 
+.status-dot {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: gray;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.form-helper {
+    display: block;
+}
+
 /* Menu (4) */
 
 .menu {
