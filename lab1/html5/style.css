@@ -443,6 +443,11 @@ button:hover {
     opacity: 0.5;
 }
 
+.slider:has(.thumbnail-link:hover) .slide:first-child {
+    opacity: 0;
+    z-index: 0;
+}
+
 .slider:has(.thumbnail-link:nth-child(1):hover) .slide:nth-child(1),
 .slider:has(.thumbnail-link:nth-child(2):hover) .slide:nth-child(2),
 .slider:has(.thumbnail-link:nth-child(3):hover) .slide:nth-child(3),
