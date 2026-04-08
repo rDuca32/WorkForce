@@ -205,6 +205,10 @@ form textarea {
     resize: vertical;
 }
 
+.login_form {
+    text-align: center;
+}
+
 .login_form, .register_form {
     margin: 0 auto;
 }
@@ -292,7 +296,8 @@ button:hover {
 }
 
 .form-helper {
-    display: block;
+    display: inline-block;
+    flex: 1;
 }
 
 /* Menu (4) */

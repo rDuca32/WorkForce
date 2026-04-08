@@ -46,14 +46,21 @@
 
     <main id="registration">
 
-        <form class="register_form">
+        <form class="register_form" name="register_form" method="post" action="#" onsubmit="validateFormOnSubmit(event)">
             <h1>Înregistrare</h1>
-            
+
             <label for="email">Email:</label>
-            <input id="email" type="email" name="email" placeholder="Email">
+            <div class="form-helper">
+                <input id="email" type="email" name="email" placeholder="Email">
+                <span class="status-dot"></span>
+            </div>
 
             <label for="phone">Telefon:</label>
-            <input id="phone" type="tel" name="phone" placeholder="Telefon">
+
+            <div class="form-helper">
+                <input id="phone" type="tel" name="phone" placeholder="Telefon">
+                <span class="status-dot"></span>
+            </div>
 
             <label for="address">Adresă:</label>
             <input id="address" type="text" name="address" placeholder="Adresă">
@@ -61,15 +68,21 @@
             <label for="username">Nume de utilizator:</label>
             <input id="username" type="text" name="username" placeholder="Nume de utilizator">
 
-            <label for="password">Parolă:</label>
-            <input id="password" type="password" name="password" placeholder="Parolă">
+            <label for="password_register">Parolă:</label>
+            <div class="form-helper">
+                <input id="password_register" type="password" name="password" placeholder="Parolă">
+                <span class="status-dot"></span>
+            </div>
 
             <label for="password_confirmation">Confirmare parolă:</label>
             <input id="password_confirmation" type="password" name="password_confirmation"
                 placeholder="Confirmare parolă">
 
             <label for="date">Data nașterii:</label>
-            <input id="date" type="date" name="date">
+            <div class="form-helper">
+                <input id="date" type="text" name="date" placeholder="Data nașterii">
+                <span class="status-dot"></span>
+            </div>
 
             <label for="age">Vârstă:</label>
             <input id="age" type="number" name="age" placeholder="Vârstă" min="18" max="70" step="1">
@@ -99,7 +112,7 @@
             <br>
 
             <label>
-                <input type="checkbox" name="confirmare">
+                <input id="confirm" type="checkbox" name="confirm">
                 Confirmare
             </label>
 

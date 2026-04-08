@@ -1,18 +1,219 @@
-const form = document.querySelector(".login_form");
+// Validare text pentru pagina de Login
 
-form.addEventListener('input', (event) => {
-    if (event.target.tagName === "INPUT") {
-        const limit = /^[0-9a-z]+$/;
+function validateText(event) {
+    const limit = /^[0-9a-z]+$/;
 
-        const input = event.target;
-        const dot = input.nextElementSibling;
+    const input = event.target;
+    const dot = input.nextElementSibling;
 
-        if (input.value === ""){
-            dot.style.backgroundColor = "gray";
-        } else if (limit.test(input.value)) {
-            dot.style.backgroundColor = "green";
-        } else {
-            dot.style.backgroundColor = "red";
+    if (input.value === "") {
+        dot.style.backgroundColor = "gray";
+    } else if (limit.test(input.value)) {
+        dot.style.backgroundColor = "green";
+    } else {
+        dot.style.backgroundColor = "red";
+    }
+}
+
+// Validare parola
+
+function validatePassword(event) {
+    const input = event.target;
+    const password = input.value;
+    const dot = input.nextElementSibling;
+
+    const hasSmallLetter = /[a-z]/.test(password);
+    const hasCapitalLetter = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasExclamationMark = /[!]/.test(password);
+
+    if (password === "") {
+        dot.style.backgroundColor = "gray";
+    } else if (hasSmallLetter && hasCapitalLetter && hasNumber && hasExclamationMark) {
+        dot.style.backgroundColor = "green";
+    } else {
+        dot.style.backgroundColor = "red";
+    }
+}
+
+// Validare email
+
+function validateEmail(event) {
+    const input = event.target;
+    const email = input.value;
+    const dot = input.nextElementSibling;
+
+    const limit = /^[0-9a-zA-Z_]+@[0-9a-zA-Z_]+(\.[0-9a-zA-Z_]+)+$/;
+
+    if (email === "") {
+        dot.style.backgroundColor = "gray";
+    } else if (limit.test(email)) {
+        dot.style.backgroundColor = "green";
+    } else {
+        dot.style.backgroundColor = "red";
+    }
+}
+
+// Validare telefon
+
+function validatePhone(event) {
+    const input = event.target;
+    const phone = input.value;
+    const dot = input.nextElementSibling;
+
+    const limit = /\(\+40\) [0-9]{3} [0-9]{3} [0-9]{3}$/;
+
+    if (phone === "") {
+        dot.style.backgroundColor = "gray";
+    } else if (limit.test(phone)) {
+        dot.style.backgroundColor = "green";
+    } else {
+        dot.style.backgroundColor = "red";
+    }
+}
+
+// Validare data
+
+function checkDateFormat(date, format) {
+    const dataParts = date.split("/");
+    const formatParts = format.split("/");
+
+    if (dataParts.length !== 3) {
+        return false;
+    }
+
+    let day, month, year;
+    let isYearValid = true;
+
+    formatParts.forEach((p, i) => {
+        const partValue = dataParts[i];
+
+        if (p === "zz") day = parseInt(partValue, 10);
+        if (p === "ll") month = parseInt(partValue, 10);
+        if (p === "aaaa" || p === "aa") {
+            year = parseInt(partValue, 10);
+            if (partValue.length !== p.length) {
+                isYearValid = false;
+            }
+        }
+    });
+
+    if (!isYearValid) {
+        return false;
+    }
+
+    if (format.includes('aa') && !format.includes('aaaa')) {
+        year += 2000;
+    }
+
+    const d = new Date(year, month - 1, day);
+    return d.getFullYear() === year && d.getMonth() === month - 1 && d.getDate() === day;
+}
+
+function validateDate(event) {
+    const input = event.target;
+    const date = input.value;
+    const dot = input.nextElementSibling;
+
+    const acceptedFormats = ['zz/ll/aaaa', 'zz/ll/aa', 'll/zz/aaaa', 'll/zz/aa'];
+
+    let isValid = false;
+
+    for (let format of acceptedFormats) {
+        if (checkDateFormat(date, format)) {
+            isValid = true;
+            break;
         }
     }
-})
+
+    if (date === "") {
+        dot.style.backgroundColor = "gray";
+    } else if (isValid) {
+        dot.style.backgroundColor = "green";
+    } else {
+        dot.style.backgroundColor = "red";
+    }
+}
+
+// Pentru validarea tuturor formularelor
+
+function validateFormOnSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+
+    if (form.querySelector("#username")) validateText({ target: form.querySelector("#username") });
+    if (form.querySelector("#password")) validateText({ target: form.querySelector("#password") });
+
+    if (form.querySelector("#password_register")) validatePassword({ target: form.querySelector("#password_register") });
+    if (form.querySelector("#email")) validateEmail({ target: form.querySelector("#email") });
+    if (form.querySelector("#phone")) validatePhone({ target: form.querySelector("#phone") });
+    if (form.querySelector("#date")) validateDate({ target: form.querySelector("#date") });
+
+    const dots = form.querySelectorAll(".status-dot");
+    let allDotsValid = true;
+
+    dots.forEach(dot => {
+        if (dot.style.backgroundColor !== "green") {
+            allDotsValid = false;
+        }
+    });
+
+    const ageInput = form.querySelector("#age");
+    const confirmCheckbox = form.querySelector("#confirm");
+
+    let isAgeValid = true;
+    let isConfirmValid = true;
+
+    if (ageInput) {
+        const age = ageInput.value;
+        if (age < 18 || age > 70 || age === "") {
+            isAgeValid = false;
+        }
+    }
+
+    if (confirmCheckbox) {
+        isConfirmValid = confirmCheckbox.checked;
+    }
+
+    if (allDotsValid && isAgeValid && isConfirmValid) {
+        alert("Formularul a fost trimis cu succes!");
+        // form.submit();
+    } else {
+        alert("Formularul nu a fost trimis cu succes!");
+    }
+
+}
+
+// Pentru pagina de login
+
+const usernameInput = document.querySelector("#username");
+if (usernameInput) {
+    usernameInput.addEventListener('input', validateText);
+}
+
+const passwordInputLogin = document.querySelector("#password");
+if (passwordInputLogin) {
+    passwordInputLogin.addEventListener('input', validateText);
+}
+
+// Pentru pagina de register
+
+const passwordRegister = document.querySelector("#password_register");
+if (passwordRegister) {
+    passwordRegister.addEventListener('input', validatePassword);
+}
+
+const emailRegister = document.querySelector("#email");
+if (emailRegister) {
+    emailRegister.addEventListener('input', validateEmail);
+}
+
+const phoneRegister = document.querySelector("#phone");
+if (phoneRegister) {
+    phoneRegister.addEventListener('input', validatePhone);
+}
+
+const dateRegister = document.querySelector("#date");
+if (dateRegister) {
+    dateRegister.addEventListener('input', validateDate);
+}
