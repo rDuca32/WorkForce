@@ -217,3 +217,56 @@ const dateRegister = document.querySelector("#date");
 if (dateRegister) {
     dateRegister.addEventListener('input', validateDate);
 }
+
+// Judete si localitati
+
+const locations = {
+    "Cluj": ["Cluj-Napoca", "Turda", "Dej"],
+    "Bistrița-Năsăud": ["Bistrița", "Napoca", "Beclean"],
+    "Dolj": ["Craiova"],
+    "Bucureşti": ["Bucureşti"],
+    "Braşov": ["Braşov", "Făgăraș", "Săcele", "Zărnești"],
+    "Alba": ["Alba Iulia"],
+    "Argeș": ["Piteși"],
+    "Timiș": ["Timișoara", "Lugoj", "Sânnicolau Mare"]
+}
+
+function dropdowns() {
+    const countySelect = document.querySelector("#county");
+    const citySelect = document.querySelector("#city");
+
+    if (!countySelect || !citySelect) {
+        return;
+    }
+
+    for (let county in locations) {
+        let option = document.createElement("option");
+        option.value = county;
+        option.textContent = county;
+        countySelect.appendChild(option);
+    }
+
+    countySelect.addEventListener("change", function (event) {
+        const countySelected = event.target.value;
+
+        citySelect.innerHTML = '<option value="">Alege Orașul</option>';
+
+        if (countySelected && locations[countySelected]) {
+            citySelect.disabled = false;
+
+            const cities = locations[countySelected];
+
+            for (let city of cities) {
+                let option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            }
+        } else {
+            citySelect.innerHTML = '<option value="">Alege județul prima dată</option>';
+            citySelect.disabled = true;
+        }
+    });
+}
+
+dropdowns();

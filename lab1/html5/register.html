@@ -93,15 +93,15 @@
             <label for="country">Țară:</label>
             <input id="country" type="text" name="country" value="România" readonly>
 
-            <label for="city">Oraș:</label>
-            <input id="city" list="cities" name="city">
+            <label for="country">Județ:</label>
+            <select id="county" name="county">
+                <option value="">Alege județul</option>
+            </select>
 
-            <datalist id="cities">
-                <option value="Cluj-Napoca">
-                <option value="București">
-                <option value="Bistrița">
-                <option value="Brașov">
-            </datalist>
+            <label for="city">Oraș:</label>
+            <select id="city" name="city" disabled>
+                <option value="">Alege județul prima dată</option>
+            </select>
 
             <label>Genul:</label>
             <select name="gender">
