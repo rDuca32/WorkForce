@@ -270,3 +270,73 @@ function dropdowns() {
 }
 
 dropdowns();
+
+function makeTablesSortable() {
+    const tables = document.querySelectorAll('table');
+
+    tables.forEach(table => {
+        const hasSpans = table.querySelector('[colspan], [rowspan]');
+
+        if (hasSpans) {
+            return;
+        }
+
+        const headers = table.querySelectorAll('tr:first-child th');
+
+        headers.forEach((header, index) => {
+            header.style.cursor = 'pointer';
+
+            header.sortDirection = "not-sorted";
+
+            header.addEventListener('click', () => {
+                if (header.sortDirection === "not-sorted" || header.sortDirection === "desc") {
+                    header.sortDirection = "asc";
+                } else {
+                    header.sortDirection = "desc";
+                }
+
+                const rows = Array.from(table.querySelectorAll('tr'));
+
+                rows.shift();
+
+                if (rows.length === 0) {
+                    return;
+                }
+
+                const parent = rows[0].parentNode;
+
+                function compareRows(rowA, rowB) {
+                    let cellA = rowA.querySelectorAll('td')[index].textContent.trim();
+                    let cellB = rowB.querySelectorAll('td')[index].textContent.trim();
+
+                    let isNumeric = false;
+                    if (!isNaN(cellA) && !isNaN(cellB) && cellA !== "" && cellB !== "") {
+                        isNumeric = true;
+                    }
+
+                    if (isNumeric === true) {
+                        if (header.sortDirection === "asc") {
+                            return cellA - cellB;
+                        } else {
+                            return cellB - cellA;
+                        }
+                    } else {
+                        if (header.sortDirection === "asc") {
+                            return cellA.localeCompare(cellB, 'ro');
+                        } else {
+                            return cellB.localeCompare(cellA, 'ro');
+                        }
+                    }
+                }
+
+                rows.sort(compareRows);
+
+                rows.forEach(function(row) {
+                    parent.appendChild(row);
+                });
+            });
+        });
+    });
+}
+
+makeTablesSortable();
