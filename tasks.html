@@ -6,11 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkForce</title>
-    <link rel="icon" href="../assets/logo.png">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="assets/logo.png">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="description" content="Aplicație destinată managerilor de șantiere">
-    <script src="../javascript/script.js" defer></script>
+    <script src="javascript/script.js" defer></script>
 </head>
 
 <body>
@@ -45,10 +45,9 @@
     </header>
 
     <main>
-        <section class="stats-overview">
-            <div class="stat-item"><b>12</b> Sarcini Active</div>
-            <div class="stat-item"><b>85%</b> Progres Total</div>
-            <div class="stat-item"><b>2</b> Întârzieri</div>
+        <section class="page-title">
+            <h1>Panou de Control</h1>
+            <p>Monitorizare progres șantier în timp real.</p>
         </section>
 
         <div class="task-grid">
@@ -64,7 +63,10 @@
                     <span>15 Feb 2026</span>
                     <strong>Echipa A</strong>
                 </div>
-                <p>Ultima actualizare: Astăzi, 09:00</p>
+                <div class="card-actions">
+                    <button>Finalizează</button>
+                    <button>Editează</button>
+                </div>
             </article>
 
             <article class="card">
@@ -78,7 +80,10 @@
                     <span>22 Feb 2026</span>
                     <strong>Echipa B</strong>
                 </div>
-                <p>Ultima actualizare: Ieri, 12:00</p>
+                <div class="card-actions">
+                    <button>Finalizează</button>
+                    <button>Editează</button>
+                </div>
             </article>
 
         </div>
@@ -93,7 +98,7 @@
             <a href="#" class="sprite-icon icon-yt" title="Youtube"></a>
         </div>
     </footer>
-
+    
 </body>
 
 </html>
