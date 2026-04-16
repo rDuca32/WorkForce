@@ -231,6 +231,8 @@ const locations = {
     "Timiș": ["Timișoara", "Lugoj", "Sânnicolau Mare"]
 }
 
+// Dropdown pentru judete si localitati register.html
+
 function dropdowns() {
     const countySelect = document.querySelector("#county");
     const citySelect = document.querySelector("#city");
@@ -270,6 +272,8 @@ function dropdowns() {
 }
 
 dropdowns();
+
+// Sortare Tabele
 
 function makeTablesSortable() {
     const tables = document.querySelectorAll('table');
@@ -340,3 +344,139 @@ function makeTablesSortable() {
 }
 
 makeTablesSortable();
+
+// Slider Lista
+
+const listItems = document.querySelectorAll("#content-list li");
+const prevButton = document.querySelector("#prev-button");
+const nextButton = document.querySelector("#next-button");
+
+if (listItems.length > 0 && prevButton && nextButton) {
+
+    let currentIndex = 0;
+    const n = 3000;
+    let autoSlideTimer;
+
+    function showItem(index) {
+        listItems[currentIndex].classList.remove("active");
+        currentIndex = (index + listItems.length) % listItems.length;
+        listItems[currentIndex].classList.add("active");
+    }
+
+    function showNext() {
+        showItem(currentIndex + 1);
+        resetTimer();
+    }
+
+    function showPrev() {
+        showItem(currentIndex - 1);
+        resetTimer();
+    }
+
+    function resetTimer() {
+        clearInterval(autoSlideTimer);
+        autoSlideTimer = setInterval(showNext, n);
+    }
+
+    nextButton.addEventListener("click", showNext);
+    prevButton.addEventListener("click", showPrev);
+
+    autoSlideTimer = setInterval(showNext, n);
+
+}
+
+// Slider Imagini 
+
+const imageSlides = document.querySelectorAll(".slider-main .slide");
+const thumbnails = document.querySelectorAll(".thumbnail-link");
+const playPauseButton = document.querySelector("#play-pause-button");
+const repeatCheckbox = document.querySelector("#repeat-checkbox");
+const intervalSelect = document.querySelector("#interval-select");
+
+if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelect) {
+    let currentImageIndex = 0;
+    let isImagePlaying = false;
+    let imageSlideTimer;
+
+    function showImage(index) {
+        imageSlides[currentImageIndex].classList.remove("active-slide");
+        thumbnails[currentImageIndex].classList.remove("active-thumbnail");
+
+        currentImageIndex = index;
+        
+        imageSlides[currentImageIndex].classList.add("active-slide");
+        thumbnails[currentImageIndex].classList.add("active-thumbnail");
+    }
+
+    function showNextImage() {
+        if (currentImageIndex === imageSlides.length - 1) {
+            if (repeatCheckbox.checked) {
+                showImage(0);
+            }
+            else {
+                stopImagesSlideshow();
+            }
+        }
+        else {
+            showImage(currentImageIndex + 1);
+        }
+    }
+    
+    function startImageSlideshow() {
+        if (currentImageIndex === imageSlides.length - 1 && !repeatCheckbox.checked) {
+            showImage(0);
+        }
+        
+        const interval = parseInt(intervalSelect.value, 10);
+
+        imageSlideTimer = setInterval(showNextImage, interval);
+        isImagePlaying = true;
+
+        playPauseButton.textContent = "Pauză";
+        playPauseButton.style.backgroundColor = "red";
+    }
+
+    function stopImagesSlideshow() {
+        clearInterval(imageSlideTimer);
+        isImagePlaying = false;
+
+        playPauseButton.textContent = "Rulează";
+        playPauseButton.style.backgroundColor = "green";
+    }
+
+    thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            if(isImagePlaying) {
+                stopImagesSlideshow();
+            }
+
+            showImage(index);
+        });
+
+        thumbnail.addEventListener("mouseenter", () => {
+            if(isImagePlaying) {
+                stopImagesSlideshow();
+            }
+            
+            showImage(index);
+        });
+    });
+
+    playPauseButton.addEventListener("click", () => {
+        if (isImagePlaying) {
+            stopImagesSlideshow();
+        }
+        else {
+            startImageSlideshow();
+        }
+    });
+
+    intervalSelect.addEventListener("change", () => {
+        if (isImagePlaying) {
+            stopImagesSlideshow();
+            startImageSlideshow();
+        }
+    });
+}

@@ -49,7 +49,7 @@
             <h2>Galerie șantiere</h2>
             <div class="slider">
                 <div class="slider-main">
-                    <div class="slide" id="slide1">
+                    <div class="slide active-slide" id="slide1">
                         <img src="../assets/santier1.jpg" alt="Șantier1">
                         <p class="slide-caption">Santier 1</p>
                     </div>
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="slider-thumbnails">
-                    <a href="#slide1" class="thumbnail-link">
+                    <a href="#slide1" class="thumbnail-link active-thumbnail">
                         <img src="../assets/santier1.jpg" alt="Thumbnail 1">
                         <span>Santier 1</span>
                     </a>
@@ -85,6 +85,26 @@
                         <span>Santier 4</span>
                     </a>
                 </div>
+
+                <div class="control-panel">
+                    <button id="play-pause-button">Rulează</button>
+
+                    <label class="control-label">
+                        <input type="checkbox" id="repeat-checkbox" checked>
+                        Repetare
+                    </label>
+
+                    <label class="control-label">
+                        Viteză:
+                        
+                        <select id="interval-select">
+                            <option value="1000">1 secundă</option>
+                            <option value="3000" selected>3 secunde</option>
+                            <option value="5000">5 secunde</option>
+                        </select>
+                    </label>
+                </div>
+                
             </div>
         </section>
     </main>
