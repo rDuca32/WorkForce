@@ -53,6 +53,11 @@ if (passwordRegister) {
     passwordRegister.addEventListener('input', validatePassword);
 }
 
+const passwordRegisterConfirm = document.querySelector("#password_confirmation");
+if (passwordRegisterConfirm) {
+    passwordRegisterConfirm.addEventListener('input', validatePassword);
+}
+
 
 
 // Validare email
@@ -185,6 +190,7 @@ function validateFormOnSubmit(event) {
     if (form.querySelector("#password")) validateText({ target: form.querySelector("#password") });
 
     if (form.querySelector("#password_register")) validatePassword({ target: form.querySelector("#password_register") });
+    if (form.querySelector("#password_confirmation")) validatePassword({ target: form.querySelector("#password_confirmation") });
     if (form.querySelector("#email")) validateEmail({ target: form.querySelector("#email") });
     if (form.querySelector("#phone")) validatePhone({ target: form.querySelector("#phone") });
     if (form.querySelector("#date")) validateDate({ target: form.querySelector("#date") });
@@ -203,6 +209,7 @@ function validateFormOnSubmit(event) {
 
     let isAgeValid = true;
     let isConfirmValid = true;
+    let matchingPasswords = true;
 
     if (ageInput) {
         const age = ageInput.value;
@@ -215,7 +222,16 @@ function validateFormOnSubmit(event) {
         isConfirmValid = confirmCheckbox.checked;
     }
 
-    if (allDotsValid && isAgeValid && isConfirmValid) {
+    if (form.querySelector("#password_confirmation")) {
+        const password = form.querySelector("#password_register").value;
+        const passwordConfirm = form.querySelector("#password_confirmation").value;
+
+        if (password !== passwordConfirm) {
+            matchingPasswords = false;
+        }
+    }
+
+    if (allDotsValid && isAgeValid && isConfirmValid && matchingPasswords) {
         alert("Succes!");
         // form.submit();
     } else {
