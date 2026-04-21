@@ -15,6 +15,18 @@ function validateText(event) {
     }
 }
 
+const usernameInput = document.querySelector("#username");
+if (usernameInput) {
+    usernameInput.addEventListener('input', validateText);
+}
+
+const passwordInputLogin = document.querySelector("#password");
+if (passwordInputLogin) {
+    passwordInputLogin.addEventListener('input', validateText);
+}
+
+
+
 // Validare parola
 
 function validatePassword(event) {
@@ -36,6 +48,13 @@ function validatePassword(event) {
     }
 }
 
+const passwordRegister = document.querySelector("#password_register");
+if (passwordRegister) {
+    passwordRegister.addEventListener('input', validatePassword);
+}
+
+
+
 // Validare email
 
 function validateEmail(event) {
@@ -54,6 +73,13 @@ function validateEmail(event) {
     }
 }
 
+const emailRegister = document.querySelector("#email");
+if (emailRegister) {
+    emailRegister.addEventListener('input', validateEmail);
+}
+
+
+
 // Validare telefon
 
 function validatePhone(event) {
@@ -71,6 +97,13 @@ function validatePhone(event) {
         dot.style.backgroundColor = "red";
     }
 }
+
+const phoneRegister = document.querySelector("#phone");
+if (phoneRegister) {
+    phoneRegister.addEventListener('input', validatePhone);
+}
+
+
 
 // Validare data
 
@@ -135,6 +168,13 @@ function validateDate(event) {
     }
 }
 
+const dateRegister = document.querySelector("#date");
+if (dateRegister) {
+    dateRegister.addEventListener('input', validateDate);
+}
+
+
+
 // Pentru validarea tuturor formularelor
 
 function validateFormOnSubmit(event) {
@@ -176,47 +216,15 @@ function validateFormOnSubmit(event) {
     }
 
     if (allDotsValid && isAgeValid && isConfirmValid) {
-        alert("Formularul a fost trimis cu succes!");
+        alert("Succes!");
         // form.submit();
     } else {
-        alert("Formularul nu a fost trimis cu succes!");
+        alert("Eroare!");
     }
 
 }
 
-// Pentru pagina de login
 
-const usernameInput = document.querySelector("#username");
-if (usernameInput) {
-    usernameInput.addEventListener('input', validateText);
-}
-
-const passwordInputLogin = document.querySelector("#password");
-if (passwordInputLogin) {
-    passwordInputLogin.addEventListener('input', validateText);
-}
-
-// Pentru pagina de register
-
-const passwordRegister = document.querySelector("#password_register");
-if (passwordRegister) {
-    passwordRegister.addEventListener('input', validatePassword);
-}
-
-const emailRegister = document.querySelector("#email");
-if (emailRegister) {
-    emailRegister.addEventListener('input', validateEmail);
-}
-
-const phoneRegister = document.querySelector("#phone");
-if (phoneRegister) {
-    phoneRegister.addEventListener('input', validatePhone);
-}
-
-const dateRegister = document.querySelector("#date");
-if (dateRegister) {
-    dateRegister.addEventListener('input', validateDate);
-}
 
 // Judete si localitati
 
@@ -273,7 +281,40 @@ function dropdowns() {
 
 dropdowns();
 
+
+
 // Sortare Tabele
+
+function compareRows(rowA, rowB, index, sortDirection) {
+    let cellA = rowA.querySelectorAll('td')[index].textContent.trim();
+    let cellB = rowB.querySelectorAll('td')[index].textContent.trim();
+
+    let isNumeric = false;
+    if (!isNaN(cellA) && !isNaN(cellB) && cellA !== "" && cellB !== "") {
+        isNumeric = true;
+    }
+
+    if (isNumeric === true) {
+        let numA = parseFloat(cellA);
+        let numB = parseFloat(cellB);
+
+        if (sortDirection === "asc") {
+            if (numA > numB) return 1;
+            if (numA < numB) return -1;
+            return 0;
+        } else {
+            if (numA > numB) return -1;
+            if (numA < numB) return 1;
+            return 0;
+        }
+    } else {
+        if (sortDirection === "asc") {
+            return cellA.localeCompare(cellB, 'ro');
+        } else {
+            return cellB.localeCompare(cellA, 'ro');
+        }
+    }
+}
 
 function makeTablesSortable() {
     const tables = document.querySelectorAll('table');
@@ -285,7 +326,7 @@ function makeTablesSortable() {
             return;
         }
 
-        const headers = table.querySelectorAll('tr:first-child th');
+        const headers = table.querySelectorAll('th');
 
         headers.forEach((header, index) => {
             header.style.cursor = 'pointer';
@@ -301,41 +342,17 @@ function makeTablesSortable() {
 
                 const rows = Array.from(table.querySelectorAll('tr'));
 
-                rows.shift();
+                rows.shift(); // Eliminam linia de header din tabel
 
                 if (rows.length === 0) {
                     return;
                 }
 
-                const parent = rows[0].parentNode;
+                const parent = rows[0].parentNode; // Parintele linilor din tabel
 
-                function compareRows(rowA, rowB) {
-                    let cellA = rowA.querySelectorAll('td')[index].textContent.trim();
-                    let cellB = rowB.querySelectorAll('td')[index].textContent.trim();
+                rows.sort((rowA, rowB) => compareRows(rowA, rowB, index, header.sortDirection)); // Sortarea linilor
 
-                    let isNumeric = false;
-                    if (!isNaN(cellA) && !isNaN(cellB) && cellA !== "" && cellB !== "") {
-                        isNumeric = true;
-                    }
-
-                    if (isNumeric === true) {
-                        if (header.sortDirection === "asc") {
-                            return cellA - cellB;
-                        } else {
-                            return cellB - cellA;
-                        }
-                    } else {
-                        if (header.sortDirection === "asc") {
-                            return cellA.localeCompare(cellB, 'ro');
-                        } else {
-                            return cellB.localeCompare(cellA, 'ro');
-                        }
-                    }
-                }
-
-                rows.sort(compareRows);
-
-                rows.forEach(function(row) {
+                rows.forEach(function (row) {
                     parent.appendChild(row);
                 });
             });
@@ -344,6 +361,8 @@ function makeTablesSortable() {
 }
 
 makeTablesSortable();
+
+
 
 // Slider Lista
 
@@ -385,6 +404,8 @@ if (listItems.length > 0 && prevButton && nextButton) {
 
 }
 
+
+
 // Slider Imagini 
 
 const imageSlides = document.querySelectorAll(".slider-main .slide");
@@ -403,7 +424,7 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
         thumbnails[currentImageIndex].classList.remove("active-thumbnail");
 
         currentImageIndex = index;
-        
+
         imageSlides[currentImageIndex].classList.add("active-slide");
         thumbnails[currentImageIndex].classList.add("active-thumbnail");
     }
@@ -421,12 +442,12 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
             showImage(currentImageIndex + 1);
         }
     }
-    
+
     function startImageSlideshow() {
         if (currentImageIndex === imageSlides.length - 1 && !repeatCheckbox.checked) {
             showImage(0);
         }
-        
+
         const interval = parseInt(intervalSelect.value, 10);
 
         imageSlideTimer = setInterval(showNextImage, interval);
@@ -448,7 +469,7 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
         thumbnail.addEventListener("click", (event) => {
             event.preventDefault();
 
-            if(isImagePlaying) {
+            if (isImagePlaying) {
                 stopImagesSlideshow();
             }
 
@@ -456,10 +477,10 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
         });
 
         thumbnail.addEventListener("mouseenter", () => {
-            if(isImagePlaying) {
+            if (isImagePlaying) {
                 stopImagesSlideshow();
             }
-            
+
             showImage(index);
         });
     });
