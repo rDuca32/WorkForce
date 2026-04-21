@@ -15,12 +15,12 @@ function validateText(event) {
     }
 }
 
-const usernameInput = document.querySelector("#username");
+const usernameInput = document.getElementById("username");
 if (usernameInput) {
     usernameInput.addEventListener('input', validateText);
 }
 
-const passwordInputLogin = document.querySelector("#password");
+const passwordInputLogin = document.getElementById("password");
 if (passwordInputLogin) {
     passwordInputLogin.addEventListener('input', validateText);
 }
@@ -209,6 +209,7 @@ function validateFormOnSubmit(event) {
 
     let isAgeValid = true;
     let isConfirmValid = true;
+    
     let matchingPasswords = true;
 
     if (ageInput) {
@@ -272,7 +273,7 @@ function dropdowns() {
         countySelect.appendChild(option);
     }
 
-    countySelect.addEventListener("change", function (event) {
+    countySelect.addEventListener("change", (event) => {
         const countySelected = event.target.value;
 
         citySelect.innerHTML = '<option value="">Alege Orașul</option>';
@@ -364,13 +365,11 @@ function makeTablesSortable() {
                     return;
                 }
 
-                const parent = rows[0].parentNode; // Parintele linilor din tabel
+                const parent = rows[0].parentNode; // Parintele linilor din tabel, adica tbody (este facut automat chiar daca nu e scris in HTML)
 
                 rows.sort((rowA, rowB) => compareRows(rowA, rowB, index, header.sortDirection)); // Sortarea linilor
 
-                rows.forEach(function (row) {
-                    parent.appendChild(row);
-                });
+                rows.forEach(row => parent.appendChild(row));
             });
         });
     });
@@ -410,7 +409,7 @@ if (listItems.length > 0 && prevButton && nextButton) {
 
     function resetTimer() {
         clearInterval(autoSlideTimer);
-        autoSlideTimer = setInterval(showNext, n);
+        autoSlideTimer = setInterval(showNext, n); // showNext se va executa dupa n secunde
     }
 
     nextButton.addEventListener("click", showNext);
@@ -466,7 +465,7 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
 
         const interval = parseInt(intervalSelect.value, 10);
 
-        imageSlideTimer = setInterval(showNextImage, interval);
+        imageSlideTimer = setInterval(showNextImage, interval); // showNextImage se va apela dupa interval secunde
         isImagePlaying = true;
 
         playPauseButton.textContent = "Pauză";
@@ -483,7 +482,7 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
 
     thumbnails.forEach((thumbnail, index) => {
         thumbnail.addEventListener("click", (event) => {
-            event.preventDefault();
+            event.preventDefault(); // sa nu sara pe pagina de la elementul ancora
 
             if (isImagePlaying) {
                 stopImagesSlideshow();
