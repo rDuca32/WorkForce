@@ -209,7 +209,7 @@ function validateFormOnSubmit(event) {
 
     let isAgeValid = true;
     let isConfirmValid = true;
-    
+
     let matchingPasswords = true;
 
     if (ageInput) {
@@ -516,3 +516,25 @@ if (imageSlides.length > 0 && playPauseButton && repeatCheckbox && intervalSelec
         }
     });
 }
+
+const clickableTownInfos = document.querySelectorAll(".clickable")
+
+clickableTownInfos.forEach(town => town.addEventListener("click", function (event) {
+    const row = this.closest("tr");
+
+    const cells = row.querySelectorAll(".inner-table:first-of-type tr td:last-child");
+
+    let total = 0;
+
+    cells.forEach(cell => {
+        const val = parseInt(cell.textContent.trim())
+        if (!isNaN(val)) {
+            total += val;
+        }
+    })
+
+    const worksite = this.innerText.split('\n')[0].trim();
+
+    alert(`${worksite} are: ${total} muncitori`);
+}
+))

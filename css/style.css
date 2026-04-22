@@ -652,6 +652,10 @@ th, td {
     min-width: 50px;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 /* Cards */
 
 .task-grid {
