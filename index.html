@@ -61,6 +61,33 @@
             </aside>
         </section>
 
+        <div class="fallingSlider">
+
+            <div class="control">
+                <label for="imgCount">Nr. de imagini:</label>
+                <input id="imgCount" type="number" name="imgCount" value="3" min="1" max="4" placeholder="Nr. de imagini">
+
+                <label for="speedCount">Nr. de secunde:</label>
+                <input id="speedCount" type="number" name="speedCount" value="1" min="1" max="4" step="1" placeholder="Nr. de secunde">
+
+                <button id="startSlider">Aplică și pornește</button>
+            </div>
+
+            <div class="vertical-slide-container">
+                <div id="prev-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-up"></i></div>
+
+                <div class="images-wrapper">
+                    <img src="assets/santier1.jpg" alt="santier1">
+                    <img src="assets/santier2.jpg" alt="santier2">
+                    <img src="assets/santier3.jpg" alt="santier3">
+                    <img src="assets/santier4.jpg" alt="santier4">
+                </div>
+
+                <div id="next-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+
+        </div>
+
 
         <figure>
             <img src="assets/santier-in-lucru.webp" alt="Șantier în lucru">
