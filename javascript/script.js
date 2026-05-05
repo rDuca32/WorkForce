@@ -541,23 +541,25 @@ clickableTownInfos.forEach(town => town.addEventListener("click", function (even
 
 /* JQUERY */
 
-$(document).ready(function() {
+/* Slider Vertical */
+
+$(document).ready(function () {
     let sliderInterval;
     const imgHeight = 300;
 
     function initVerticalSlider() {
         clearInterval(sliderInterval);
-        
+
         const visibleCount = parseInt($('#imgCount').val());
         const durationSeconds = parseInt($('#speedCount').val());
         const duration = durationSeconds * 1000;
 
         $('#vertical-slide-container').css('height', (visibleCount * imgHeight) + 'px');
-        
+
         function moveUp() {
             const wrapper = $('#images-wrapper');
 
-            wrapper.stop(true, true).animate({top: -imgHeight}, 500, function() {
+            wrapper.stop(true, true).animate({ top: -imgHeight }, 500, function () {
                 wrapper.append(wrapper.children().first());
                 wrapper.css('top', '0');
             });
@@ -569,7 +571,7 @@ $(document).ready(function() {
             wrapper.prepend(wrapper.children().last());
             wrapper.css('top', -imgHeight + 'px');
 
-            wrapper.stop(true, true).animate({top: 0}, 500);
+            wrapper.stop(true, true).animate({ top: 0 }, 500);
         }
 
         sliderInterval = setInterval(moveUp, duration);
@@ -578,20 +580,68 @@ $(document).ready(function() {
         $('#prev-arrow').off('click').on('click', moveUp);
 
         $('#vertical-slide-container').off('mouseenter mouseleave').hover(
-            function() {
+            function () {
                 clearInterval(sliderInterval);
             },
 
-            function() {
+            function () {
                 sliderInterval = setInterval(moveUp, duration);
             }
         )
     }
 
-    $('#startSlider').on('click', function(event) {
+    $('#startSlider').on('click', function (event) {
         event.preventDefault();
         initVerticalSlider();
     })
 
     initVerticalSlider();
+})
+
+/* Filtrare si cautare in tabel */
+
+$(document).ready(function () {
+    $('#searchInput, .filter-radio, .filter-checkbox').on('input change', function () {
+        let searchText = $('#searchInput').val().toLowerCase();
+
+        let radioLocation = $('.filter-radio:checked').val();
+        if(radioLocation) {
+            radioLocation = radioLocation.toLowerCase();
+        }
+
+        let checkedStatuses = []
+        $('.filter-checkbox:checked').each(function () {
+            checkedStatuses.push($(this).val());
+        })
+
+        $('.main-table > tbody > tr').each(function () {
+            let $row = $(this);
+
+            let colWorksites = $row.find('> td').eq(1).text().toLowerCase();
+            let colLocations = $row.find('> td').eq(2).text().toLowerCase();
+            let colTasks = $row.find('> td').eq(4).text();
+
+            let matchesSearct = colWorksites.includes(searchText) || colLocations.includes(searchText);
+            let matchesRadio = (radioLocation === "toate" || colLocations.includes(radioLocation));
+            let matchesCheckbox = true;
+
+            $.each(checkedStatuses, function (index, status) {
+                if (!colTasks.includes(status)) {
+                    matchesCheckbox = false;
+                }
+            })
+
+            if (matchesSearct && matchesRadio && matchesCheckbox) {
+                $row.show();
+            } else {
+                $row.hide();
+            }
+        })
+    })
+})
+
+/* Pop-up */
+
+$(document).ready(function () {
+    console.log("salut");
 })

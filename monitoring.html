@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="description" content="Aplicație destinată managerilor de șantiere">
     <script src="javascript/script.js" defer></script>
+    <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
 
 <body>
@@ -44,7 +45,40 @@
         </nav>
     </header>
 
-    <main class="tables">
+    <main>
+
+        <div class="filter-container">
+
+            <h3>Filtrează șantierele</h3>
+
+            <div class="filter-group">
+                <label for="searchInput">Caută (șantier / locație)</label>
+                <input id="searchInput" type="text" placeholder="Ex: Kaufland, Cluj...">
+            </div>
+
+            <div class="filter-group">
+                Locație
+
+                <label><input type="radio" name="locationFilter" class="filter-radio" value="Toate" checked>Toate</label>
+                <label><input type="radio" name="locationFilter" class="filter-radio" value="Bistrița">Bistrița</label>
+                <label><input type="radio" name="locationFilter" class="filter-radio" value="Cluj-Napoca">Cluj-Napoca</label>
+            </div>
+
+            <div class="filter-group">
+                Status sarcini
+
+                <label class="has-tooltip">
+                    <input type="checkbox" class="filter-checkbox" value="Finalizată"> Finalizată
+                </label>
+                <label class="has-tooltip">
+                    <input type="checkbox" class="filter-checkbox" value="În lucru"> În lucru
+                </label>
+                <label class="has-tooltip">
+                    <input type="checkbox" class="filter-checkbox" value="Neîncepută"> Neîncepută
+                </label>
+            </div>
+
+        </div>
 
         <div style="width: 100%;">
 
@@ -167,7 +201,7 @@
                             </div>
                         </td>
                         <td class="has-tooltip">
-                            Cluj
+                            Cluj-Napoca
                             <div class="tooltip">
                                 <b>Cluj-Napoca, Romania</b><br>
                                 Jud. Cluj<br>
@@ -257,6 +291,13 @@
 
         <a href="./worksites.html">Șantiere</a>
         <a href="./progress.html">Progres</a>
+    </div>
+
+    <div id="popup-overlay">
+        <div id="popup-box">
+            <span id="popup-close"><i class="fa-solid fa-xmark"></i></span>
+            <div id="popup-content-area"></div>
+        </div>
     </div>
 
     <footer>
