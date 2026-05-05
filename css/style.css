@@ -300,6 +300,12 @@ button:hover {
     flex: 1;
 }
 
+.hidden-info {
+    display: none;
+    text-align: left;
+    padding: 20px;
+}
+
 /* Menu (4) */
 
 .menu {
@@ -950,10 +956,10 @@ th, td {
 }
 
 #popup-content-area img {
-    max-width: 100%;
-    max-height: 70vh;
+    max-height: 50vh;
+    width: auto;
     object-fit: contain;
-    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 /* Responsive */

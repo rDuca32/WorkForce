@@ -643,5 +643,30 @@ $(document).ready(function () {
 /* Pop-up */
 
 $(document).ready(function () {
-    console.log("salut");
+    $('.table-img').on('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let $clonedImg = $(this).clone();
+        $clonedImg.removeClass('table-img');
+
+        let targetId = $(this).attr('data-target');
+        let $clonedInfo = $(targetId).clone();
+        $clonedInfo.removeClass('hidden-info').css('display', 'block');
+
+        $('#popup-content-area').empty().append($clonedImg).append($clonedInfo);
+        $('#popup-overlay').css('display', 'flex').hide().fadeIn(500);
+    })
+
+    $('#popup-close').on('click', function() {
+        $('#popup-overlay').fadeOut(500, function() {
+            $('#popup-content-area').empty();
+        })
+    })
+
+    $('#popup-overlay').on('click', function(event) {
+        if (event.target === this) {
+            $('#popup-close').click();
+        }
+    })
 })
