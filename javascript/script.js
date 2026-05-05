@@ -544,57 +544,71 @@ clickableTownInfos.forEach(town => town.addEventListener("click", function (even
 /* Slider Vertical */
 
 $(document).ready(function () {
+
+    // definim intervalul si inaltimea imaginilor
     let sliderInterval;
     const imgHeight = 300;
 
     function initVerticalSlider() {
+        // curatam intervalul
         clearInterval(sliderInterval);
 
+        // selectam valorile din fieldurile de imagini vizibile si secunde viteza
         const visibleCount = parseInt($('#imgCount').val());
         const durationSeconds = parseInt($('#speedCount').val());
         const duration = durationSeconds * 1000;
 
+        // facem sliderul de dimensiunea a cate imagini avem seletate
         $('#vertical-slide-container').css('height', (visibleCount * imgHeight) + 'px');
 
         function moveUp() {
             const wrapper = $('#images-wrapper');
 
+            // oprim animatia anterioara sa nu avem glitch si animam imaginile de jos in sus pe 0.5 secunde
             wrapper.stop(true, true).animate({ top: -imgHeight }, 500, function () {
-                wrapper.append(wrapper.children().first());
-                wrapper.css('top', '0');
+                wrapper.append(wrapper.children().first()); // primul copil in punel la capat
+                wrapper.css('top', '0'); // punem lista sus de tot
             });
         }
 
         function moveDown() {
             const wrapper = $('#images-wrapper');
 
-            wrapper.prepend(wrapper.children().last());
-            wrapper.css('top', -imgHeight + 'px');
+            wrapper.prepend(wrapper.children().last()); // punem inainte ultimul copil
+            wrapper.css('top', -imgHeight + 'px'); // mutam toata lista mai in jos cu dimensiune inaltimii imaginilor
 
+            // oprim animatia anterioara si animal miscarea de sus in jos pe 0.5 secunde
             wrapper.stop(true, true).animate({ top: 0 }, 500);
         }
 
+        // pornim intervalul incepand si functia dupa numarul de secunde din duration
         sliderInterval = setInterval(moveUp, duration);
 
+        // legam sagetile de actiunile corespunzatoare
+        // mai intai curatam instructiunea anterioara sa nu se acumuleze
         $('#next-arrow').off('click').on('click', moveDown);
         $('#prev-arrow').off('click').on('click', moveUp);
 
         $('#vertical-slide-container').off('mouseenter mouseleave').hover(
+            // curatam intervalul cand dam hover pe container
             function () {
                 clearInterval(sliderInterval);
             },
 
+            // repornim intervalul cand scoatem hoverul
             function () {
                 sliderInterval = setInterval(moveUp, duration);
             }
         )
     }
 
+    // cand dam start la slider dupa ce am setat valorile acesta se initializeaza sau reinitializeaza
     $('#startSlider').on('click', function (event) {
         event.preventDefault();
         initVerticalSlider();
     })
 
+    // initializam intervalul
     initVerticalSlider();
 })
 
@@ -602,35 +616,40 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('#searchInput, .filter-radio, .filter-checkbox').on('input change', function () {
-        let searchText = $('#searchInput').val().toLowerCase();
+        let searchText = $('#searchInput').val().toLowerCase(); // selectam valoarea pentru search
 
-        let radioLocation = $('.filter-radio:checked').val();
+        let radioLocation = $('.filter-radio:checked').val(); // selectam radiou-ul apasat
         if (radioLocation) {
             radioLocation = radioLocation.toLowerCase();
         }
 
         let checkedStatuses = []
         $('.filter-checkbox:checked').each(function () {
-            checkedStatuses.push($(this).val());
+            checkedStatuses.push($(this).val()); // adaugam fiecare checkbox bifat
         })
 
+        // parcurgem fiecare rand din tabelul principal
         $('.main-table > tbody > tr').each(function () {
-            let $row = $(this);
+            let $row = $(this); // alegem randul curent
 
+            // luam pentru fiecare valorile corespunzatoare pe baza coloanelor
             let colWorksites = $row.find('> td').eq(1).text().toLowerCase();
             let colLocations = $row.find('> td').eq(2).text().toLowerCase();
             let colTasks = $row.find('> td').eq(4).text();
 
+            // definim variabilele de corespondenta
             let matchesSearct = colWorksites.includes(searchText) || colLocations.includes(searchText);
             let matchesRadio = (radioLocation === "toate" || colLocations.includes(radioLocation));
             let matchesCheckbox = true;
 
+            // parcurgem fiecare status ca sa putem face selectia doar pentru cele adevarate
             $.each(checkedStatuses, function (index, status) {
                 if (!colTasks.includes(status)) {
                     matchesCheckbox = false;
                 }
             })
 
+            // verificam si afisam randul care indeplineste toate conditiile
             if (matchesSearct && matchesRadio && matchesCheckbox) {
                 $row.show();
             } else {
@@ -644,28 +663,38 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('.table-img').on('click', function (event) {
+
+        // masuri de preventie pentru click pe casuta din tabel care are alta actiune
         event.preventDefault();
         event.stopPropagation();
 
+        // clonam poza si scoatem clasa pentru a lasa sa se extinda
         let $clonedImg = $(this).clone();
         $clonedImg.removeClass('table-img');
 
+        // clonam informatia din datele ascunse
         let targetId = $(this).attr('data-target');
         let $clonedInfo = $(targetId).clone();
+
+        // scoatem clasa care o ascunde si o facem sa se afiseze corespunzator
         $clonedInfo.removeClass('hidden-info').css('display', 'block');
 
+        // golim pop-up si adaugam imaginea si descrierea ascunsa cu animatie
         $('#popup-content-area').empty().append($clonedImg).append($clonedInfo);
         $('#popup-overlay').css('display', 'flex').hide().fadeIn(500);
     })
 
+    // la click pe butonul x inchidem cu animatie pop-up si golim informatia din acesta
     $('#popup-close').on('click', function () {
         $('#popup-overlay').fadeOut(500, function () {
             $('#popup-content-area').empty();
         })
     })
 
+    // cand dam click pe langa de asemenea inchidem
     $('#popup-overlay').on('click', function (event) {
         if (event.target === this) {
+            // apelam functia de deasupra
             $('#popup-close').click();
         }
     })
@@ -674,9 +703,10 @@ $(document).ready(function () {
 /* Calculator */
 
 $(document).ready(function () {
-    let conversionRate = 5;
+    let conversionRate = 5; // backup
     let currentMoneyType = "RON";
 
+    // apelam un API public pentru conversia de valuta
     $.getJSON('https://open.er-api.com/v6/latest/EUR', function(data) {
         if(data && data.rates && data.rates.RON) {
             conversionRate = data.rates.RON;
@@ -684,38 +714,55 @@ $(document).ready(function () {
         }
     });
 
+    // materiale predefinite
     const materials = [
         { name: "Beton C25/30", price: 350, unit: "mc" },
         { name: "Cărămidă Porotherm", price: 5, unit: "buc" },
         { name: "Oțel Beton", price: 25, unit: "kg" },
-        { name: "Vopsea Lavabilă", price: 120, unit: "găleată" }
+        { name: "Vopsea Lavabilă", price: 120, unit: "găleată" },
+        { name: "Ciment Multibat", price: 28, unit: "sac" },
+        { name: "Glet Meseriaș", price: 45, unit: "sac" },
+        { name: "Polistiren 10cm", price: 85, unit: "pachet" },
+        { name: "Adeziv Polistiren", price: 32, unit: "sac" },
+        { name: "Placă Rigips 12.5mm", price: 40, unit: "foaie" },
+        { name: "Țiglă Metalică", price: 55, unit: "mp" },
+        { name: "Cherestea Rășinoase", price: 1200, unit: "mc" },
+        { name: "Nisip Sortat", price: 90, unit: "mc" }
     ];
 
+    // initializam variabila de selectare a materialului si punem prima optiune de alegere
     let $select = $('#calc-material');
     $select.append('<option value="0"> Alege material </option>');
 
+    // pentru fiecare material din lista predefinita adaugam optiunea impreuna cu pretul per unitate
     $.each(materials, function (index, material) {
         $select.append(`<option value="${material.price}"> ${material.name} (${material.price} RON / ${material.unit})</option>`);
     });
 
     function getTotal() {
+        // extragem pretul, cantitatea si daca e apasat checkboxul de urgenta
         let price = parseFloat($('#calc-material').val()) || 0;
         let quantity = parseInt($('#calc-quantity').val()) || 0;
         let urgent = $('#calc-urgent').is(':checked');
 
+        // forteaza tipul de valuta care e intre taguri strong sa se interschimbe
         $('#calc-total').next('strong').text(currentMoneyType);
 
+        // daca pretul sau cantitatea e zero atunci punem 0 la total
         if (price == 0 || quantity == 0) {
             $('#calc-total').text("0");
             $('#discount-message').slideUp(200);
             return;
         }
 
+        // definim totalul
         let total = price * quantity;
 
+        // daca cantitatea depaseste 50 bucati aplicam 10% reducere
         if (quantity > 50) {
             total = total - (total * 0.1);
 
+            // daca nu avem mesajul deja vizibil afisam cu animatie
             if (!$('#discount-message').is(':visible')) {
                 $('#discount-message').slideDown(200);
             }
@@ -723,30 +770,37 @@ $(document).ready(function () {
             $('#discount-message').slideUp(200);
         }
 
+        // crestem pretul daca e urgent
         if (urgent) {
             total += 100;
         }
 
+        // definim ce vrem sa afisam
         let showTotal = total;
         let symbol = "RON"
 
+        // pentru tipul euro facem conversia
         if (currentMoneyType === "EUR") {
             showTotal = total / conversionRate;
             symbol = "EUR"
         }
 
+        // animam schimbarea pretului cu doua zecimale
         $('#calc-total').stop(true, true).fadeOut(100, function() {
             $(this).text(showTotal.toLocaleString('ro-RO', { 
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             })).fadeIn(100);
             
+            // adaugam valuta in elementul strong
             $(this).next('strong').text(currentMoneyType);
         });
     }
 
+    // apelam functia cand se face o schimbare in campurile definite
     $('#calc-material, #calc-quantity, #calc-urgent').on('input change', getTotal);
 
+    // functia de conversie
     function changeMoneyType() {
         if (currentMoneyType === "RON") {
             currentMoneyType = "EUR";
@@ -758,5 +812,6 @@ $(document).ready(function () {
         getTotal();
     }
 
+    // la click pe buton facem conversia
     $('#btn-currency').on('click', changeMoneyType);
 })
