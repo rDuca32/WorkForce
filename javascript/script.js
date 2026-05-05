@@ -674,6 +674,15 @@ $(document).ready(function () {
 /* Calculator */
 
 $(document).ready(function () {
+    let conversionRate = 5;
+    let currentMoneyType = "RON";
+
+    $.getJSON('https://open.er-api.com/v6/latest/EUR', function(data) {
+        if(data && data.rates && data.rates.RON) {
+            conversionRate = data.rates.RON;
+            getTotal();
+        }
+    });
 
     const materials = [
         { name: "Beton C25/30", price: 350, unit: "mc" },
@@ -689,10 +698,12 @@ $(document).ready(function () {
         $select.append(`<option value="${material.price}"> ${material.name} (${material.price} RON / ${material.unit})</option>`);
     });
 
-    $('#calc-material, #calc-quantity, #calc-urgent').on('input change', function () {
+    function getTotal() {
         let price = parseFloat($('#calc-material').val()) || 0;
         let quantity = parseInt($('#calc-quantity').val()) || 0;
         let urgent = $('#calc-urgent').is(':checked');
+
+        $('#calc-total').next('strong').text(currentMoneyType);
 
         if (price == 0 || quantity == 0) {
             $('#calc-total').text("0");
@@ -716,8 +727,36 @@ $(document).ready(function () {
             total += 100;
         }
 
-        $('#calc-total').fadeOut(250, function() {
-            $(this).text(total.toLocaleString('ro-RO')).fadeIn(100);
+        let showTotal = total;
+        let symbol = "RON"
+
+        if (currentMoneyType === "EUR") {
+            showTotal = total / conversionRate;
+            symbol = "EUR"
+        }
+
+        $('#calc-total').stop(true, true).fadeOut(100, function() {
+            $(this).text(showTotal.toLocaleString('ro-RO', { 
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })).fadeIn(100);
+            
+            $(this).next('strong').text(currentMoneyType);
         });
-    })
+    }
+
+    $('#calc-material, #calc-quantity, #calc-urgent').on('input change', getTotal);
+
+    function changeMoneyType() {
+        if (currentMoneyType === "RON") {
+            currentMoneyType = "EUR";
+            $(this).html('<i class="fa-solid fa-money-bill-transfer"></i> Schimbă în RON');
+        } else {
+            currentMoneyType = "RON";
+            $(this).html('<i class="fa-solid fa-money-bill-transfer"></i> Schimbă în EURO');
+        }
+        getTotal();
+    }
+
+    $('#btn-currency').on('click', changeMoneyType);
 })
