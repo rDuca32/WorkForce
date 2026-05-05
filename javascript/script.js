@@ -605,7 +605,7 @@ $(document).ready(function () {
         let searchText = $('#searchInput').val().toLowerCase();
 
         let radioLocation = $('.filter-radio:checked').val();
-        if(radioLocation) {
+        if (radioLocation) {
             radioLocation = radioLocation.toLowerCase();
         }
 
@@ -643,7 +643,7 @@ $(document).ready(function () {
 /* Pop-up */
 
 $(document).ready(function () {
-    $('.table-img').on('click', function(event) {
+    $('.table-img').on('click', function (event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -658,15 +658,66 @@ $(document).ready(function () {
         $('#popup-overlay').css('display', 'flex').hide().fadeIn(500);
     })
 
-    $('#popup-close').on('click', function() {
-        $('#popup-overlay').fadeOut(500, function() {
+    $('#popup-close').on('click', function () {
+        $('#popup-overlay').fadeOut(500, function () {
             $('#popup-content-area').empty();
         })
     })
 
-    $('#popup-overlay').on('click', function(event) {
+    $('#popup-overlay').on('click', function (event) {
         if (event.target === this) {
             $('#popup-close').click();
         }
+    })
+})
+
+/* Calculator */
+
+$(document).ready(function () {
+
+    const materials = [
+        { name: "Beton C25/30", price: 350, unit: "mc" },
+        { name: "Cărămidă Porotherm", price: 5, unit: "buc" },
+        { name: "Oțel Beton", price: 25, unit: "kg" },
+        { name: "Vopsea Lavabilă", price: 120, unit: "găleată" }
+    ];
+
+    let $select = $('#calc-material');
+    $select.append('<option value="0"> Alege material </option>');
+
+    $.each(materials, function (index, material) {
+        $select.append(`<option value="${material.price}"> ${material.name} (${material.price} RON / ${material.unit})</option>`);
+    });
+
+    $('#calc-material, #calc-quantity, #calc-urgent').on('input change', function () {
+        let price = parseFloat($('#calc-material').val()) || 0;
+        let quantity = parseInt($('#calc-quantity').val()) || 0;
+        let urgent = $('#calc-urgent').is(':checked');
+
+        if (price == 0 || quantity == 0) {
+            $('#calc-total').text("0");
+            $('#discount-message').slideUp(200);
+            return;
+        }
+
+        let total = price * quantity;
+
+        if (quantity > 50) {
+            total = total - (total * 0.1);
+
+            if (!$('#discount-message').is(':visible')) {
+                $('#discount-message').slideDown(200);
+            }
+        } else {
+            $('#discount-message').slideUp(200);
+        }
+
+        if (urgent) {
+            total += 100;
+        }
+
+        $('#calc-total').fadeOut(250, function() {
+            $(this).text(total.toLocaleString('ro-RO')).fadeIn(100);
+        });
     })
 })

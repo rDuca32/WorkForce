@@ -88,6 +88,39 @@
             </article>
 
         </div>
+
+        <section style="margin-top: 25px;">
+            <h2 style="text-align: center;">Calculator materiale</h2>
+
+            <div id="calculator-wrapper">
+                <div>
+                    <label for="calc-material"><strong>Tip material</strong></label>
+                    <select id="calc-material"></select>
+                </div>
+
+                <div>
+                    <label for="calc-quantity">Cantitatea necesară</label>
+                    <input id="calc-quantity" type="number" min="1" value="1">
+                    <small id="discount-message">
+                        <i class="fa-solid fa-tag"></i> Ai primit o reducere de 10%
+                    </small>
+                </div>
+
+                <div>
+                    <label>
+                        <input id="calc-urgent" type="checkbox">
+                        <strong>Livrare urgentă</strong> (+100 RON taxă)
+                    </label>
+                </div>
+
+                <div style="font-size: 18px; margin-top: 20px;">
+                    Cost total estimat:
+                    <span id="calc-total">0</span>
+                    <strong>RON</strong>
+                </div>
+            </div>
+        </section>
+        
     </main>
 
     <footer>
