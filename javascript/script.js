@@ -550,10 +550,10 @@ $(document).ready(function () {
     const imgHeight = 300;
 
     function initVerticalSlider() {
-        // curatam intervalul
+        // curatam intervalul anterior
         clearInterval(sliderInterval);
 
-        // selectam valorile din fieldurile de imagini vizibile si secunde viteza
+        // selectam valorile din campurile definite de utilizator
         const visibleCount = parseInt($('#imgCount').val());
         const durationSeconds = parseInt($('#speedCount').val());
         const duration = durationSeconds * 1000;
@@ -563,22 +563,52 @@ $(document).ready(function () {
 
         function moveUp() {
             const wrapper = $('#images-wrapper');
+            const firstChild = wrapper.children().first();
 
-            // oprim animatia anterioara sa nu avem glitch si animam imaginile de jos in sus pe 0.5 secunde
+            // animam prima imagine (cea care pleaca) sa se micsoreze si sa dspara
+            firstChild.css({
+                'transition': 'all 0.5s',
+                'opacity': '0',
+                'transform': 'scale(0.8) translateY(-50px)'
+            });
+
+            // animam miscarea intregului corp in sus pe 0.5 secunde
+            // prevenim acumularea animatiilor la multe clickuri rapide
             wrapper.stop(true, true).animate({ top: -imgHeight }, 500, function () {
-                wrapper.append(wrapper.children().first()); // primul copil in punel la capat
-                wrapper.css('top', '0'); // punem lista sus de tot
+                wrapper.append(firstChild); // primul copil in punel la capat, adica imaginea care a iesit din cadru
+
+                // resetam imaginea pentru urmatoarea ei aparitie
+                firstChild.css({
+                    'transition': 'none',
+                    'opacity': '1',
+                    'transform': 'none'
+                });
+                
+                wrapper.css('top', '0'); // resetam pozitia la inceput
             });
         }
 
         function moveDown() {
             const wrapper = $('#images-wrapper');
+            const lastChild = wrapper.children().last();
 
-            wrapper.prepend(wrapper.children().last()); // punem inainte ultimul copil
-            wrapper.css('top', -imgHeight + 'px'); // mutam toata lista mai in jos cu dimensiune inaltimii imaginilor
+            // pregatim ultima imagine sa apara sus cu efect
+            lastChild.css({
+                'opacity': '0',
+                'transform': 'scale(0.8) translateY(50px)'
+            });
 
-            // oprim animatia anterioara si animal miscarea de sus in jos pe 0.5 secunde
+            wrapper.prepend(lastChild); // punem inainte ultimul copil, adica ultima imagine
+            wrapper.css('top', -imgHeight + 'px'); // modificam pozitia pentru a incapea noul element
+
+            // animam revenirea listei in sus
             wrapper.stop(true, true).animate({ top: 0 }, 500);
+
+            // readucem imaginea la normal printr-o tranzitie
+            lastChild.css('transition', 'all 0.5s').css({
+                'opacity': '1',
+                'transform': 'none'
+            });
         }
 
         // pornim intervalul incepand si functia dupa numarul de secunde din duration
@@ -707,8 +737,8 @@ $(document).ready(function () {
     let currentMoneyType = "RON";
 
     // apelam un API public pentru conversia de valuta
-    $.getJSON('https://open.er-api.com/v6/latest/EUR', function(data) {
-        if(data && data.rates && data.rates.RON) {
+    $.getJSON('https://open.er-api.com/v6/latest/EUR', function (data) {
+        if (data && data.rates && data.rates.RON) {
             conversionRate = data.rates.RON;
             getTotal();
         }
@@ -786,12 +816,12 @@ $(document).ready(function () {
         }
 
         // animam schimbarea pretului cu doua zecimale
-        $('#calc-total').stop(true, true).fadeOut(100, function() {
-            $(this).text(showTotal.toLocaleString('ro-RO', { 
+        $('#calc-total').stop(true, true).fadeOut(100, function () {
+            $(this).text(showTotal.toLocaleString('ro-RO', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             })).fadeIn(100);
-            
+
             // adaugam valuta in elementul strong
             $(this).next('strong').text(currentMoneyType);
         });
