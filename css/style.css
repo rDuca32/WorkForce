@@ -459,9 +459,13 @@ button:hover {
     z-index: 2;
 }
 
-.fallingSlider {
+#fallingSlider {
     text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 /* Thumbnailuri */
@@ -800,20 +804,6 @@ th, td {
     font-size: 15px;
 }
 
-.control {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    border: 1px solid black;
-    padding: 25px;
-    border-radius: 25px;
-    margin: 0 auto;
-}
-
-#startSlider {
-    margin-top: 25px;
-}
-
 .list-slider {
     max-width: 400px;
     padding: 15px;
@@ -822,6 +812,52 @@ th, td {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     text-align: center;
     font-size: 25px;
+}
+
+#vertical-slide-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 500px;
+    width: 100%;
+    margin: 40px auto;
+    border: 2px solid black;
+}
+
+#images-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#images-wrapper img, 
+#images-wrapper video {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+.slider-arrow {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    color: black;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    cursor: pointer;
+}
+
+#prev-arrow { top: 0; }
+#next-arrow { bottom: 0; }
+
+#vertical-slide-container:hover .slider-arrow {
+    display: flex;
 }
 
 /* --- CSS Sprite --- */

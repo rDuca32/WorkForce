@@ -538,3 +538,60 @@ clickableTownInfos.forEach(town => town.addEventListener("click", function (even
     alert(`${worksite} are: ${total} muncitori`);
 }
 ))
+
+/* JQUERY */
+
+$(document).ready(function() {
+    let sliderInterval;
+    const imgHeight = 300;
+
+    function initVerticalSlider() {
+        clearInterval(sliderInterval);
+        
+        const visibleCount = parseInt($('#imgCount').val());
+        const durationSeconds = parseInt($('#speedCount').val());
+        const duration = durationSeconds * 1000;
+
+        $('#vertical-slide-container').css('height', (visibleCount * imgHeight) + 'px');
+        
+        function moveUp() {
+            const wrapper = $('#images-wrapper');
+
+            wrapper.stop(true, true).animate({top: -imgHeight}, 500, function() {
+                wrapper.append(wrapper.children().first());
+                wrapper.css('top', '0');
+            });
+        }
+
+        function moveDown() {
+            const wrapper = $('#images-wrapper');
+
+            wrapper.prepend(wrapper.children().last());
+            wrapper.css('top', -imgHeight + 'px');
+
+            wrapper.stop(true, true).animate({top: 0}, 500);
+        }
+
+        sliderInterval = setInterval(moveUp, duration);
+
+        $('#next-arrow').off('click').on('click', moveDown);
+        $('#prev-arrow').off('click').on('click', moveUp);
+
+        $('#vertical-slide-container').off('mouseenter mouseleave').hover(
+            function() {
+                clearInterval(sliderInterval);
+            },
+
+            function() {
+                sliderInterval = setInterval(moveUp, duration);
+            }
+        )
+    }
+
+    $('#startSlider').on('click', function(event) {
+        event.preventDefault();
+        initVerticalSlider();
+    })
+
+    initVerticalSlider();
+})
