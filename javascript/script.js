@@ -770,11 +770,20 @@ $(document).ready(function () {
     });
 
     function getTotal() {
+
         // extragem pretul, cantitatea si daca e apasat checkboxul de urgenta
         let price = parseFloat($('#calc-material').val()) || 0;
         let quantity = parseInt($('#calc-quantity').val()) || 0;
         let urgent = $('#calc-urgent').is(':checked');
-        const freeShippingThreshold = 5000;
+
+        // pentru livrare gratuita
+        const baseThreshold = 5000;
+        let freeShippingThreshold = baseThreshold;
+
+        // daca suntem pe euro convertim pragul de afișare
+        if (currentMoneyType === "EUR") {
+            freeShippingThreshold = baseThreshold / conversionRate;
+        }
 
         // forteaza tipul de valuta care e intre taguri strong sa se interschimbe
         $('#calc-total').next('strong').text(currentMoneyType);
@@ -786,7 +795,7 @@ $(document).ready(function () {
 
             // resetam bara de progres pentru livrare gratis
             $('#shipping-bar').css('width', '0%');
-            $('#shipping-info').text(`Mai adaugă ${freeShippingThreshold.toLocaleString('ro-RO')} RON pentru livrare gratuită`);
+            $('#shipping-info').text(`Mai adaugă ${freeShippingThreshold.toLocaleString('ro-RO', {maximumFractionDigits: 2})} ${currentMoneyType} pentru livrare gratuită.`);            
             
             return;
         }
@@ -813,12 +822,10 @@ $(document).ready(function () {
 
         // definim ce vrem sa afisam
         let showTotal = total;
-        let symbol = "RON"
 
         // pentru tipul euro facem conversia
         if (currentMoneyType === "EUR") {
             showTotal = total / conversionRate;
-            symbol = "EUR"
         }
 
         // animam schimbarea pretului cu doua zecimale
@@ -833,7 +840,7 @@ $(document).ready(function () {
         });
 
         // calculam procentajul atins pana la discount
-        let percentage = (total / freeShippingThreshold) * 100;
+        let percentage = (showTotal / freeShippingThreshold) * 100;
 
         // nu sarim peste limita
         if (percentage > 100) {
@@ -844,12 +851,12 @@ $(document).ready(function () {
         $('#shipping-bar').css('width', percentage + '%');
 
         // actualizăm textul informativ
-        if (total >= freeShippingThreshold) {
+        if (showTotal >= freeShippingThreshold) {
             $('#shipping-info').html('<span style="color: green; font-weight: bold;"> Livrare gratuită</span>');
-            $('#shipping-bar').css('background', 'red');
+            $('#shipping-bar').css('background', 'forestgreen');
         } else {
-            let remaining = freeShippingThreshold - total;
-            $('#shipping-info').text(`Mai adaugă ${remaining.toLocaleString('ro-RO')} RON pentru livrare gratuită`);
+            let remaining = freeShippingThreshold - showTotal;
+            $('#shipping-info').text(`Mai adaugă ${remaining.toLocaleString('ro-RO', {maximumFractionDigits: 2})} ${currentMoneyType} pentru livrare gratuită`);
             $('#shipping-bar').css('background', 'var(--primary-color)');
         }
     }
