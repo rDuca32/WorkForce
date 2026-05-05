@@ -583,7 +583,7 @@ $(document).ready(function () {
                     'opacity': '1',
                     'transform': 'none'
                 });
-                
+
                 wrapper.css('top', '0'); // resetam pozitia la inceput
             });
         }
@@ -774,14 +774,20 @@ $(document).ready(function () {
         let price = parseFloat($('#calc-material').val()) || 0;
         let quantity = parseInt($('#calc-quantity').val()) || 0;
         let urgent = $('#calc-urgent').is(':checked');
+        const freeShippingThreshold = 5000;
 
         // forteaza tipul de valuta care e intre taguri strong sa se interschimbe
         $('#calc-total').next('strong').text(currentMoneyType);
 
         // daca pretul sau cantitatea e zero atunci punem 0 la total
         if (price == 0 || quantity == 0) {
-            $('#calc-total').text("0");
+            $('#calc-total').text("0.00");
             $('#discount-message').slideUp(200);
+
+            // resetam bara de progres pentru livrare gratis
+            $('#shipping-bar').css('width', '0%');
+            $('#shipping-info').text(`Mai adaugă ${freeShippingThreshold.toLocaleString('ro-RO')} RON pentru livrare gratuită`);
+            
             return;
         }
 
@@ -816,7 +822,7 @@ $(document).ready(function () {
         }
 
         // animam schimbarea pretului cu doua zecimale
-        $('#calc-total').stop(true, true).fadeOut(100, function () {
+        $('#calc-total').stop(true, true).fadeOut(100, function() {
             $(this).text(showTotal.toLocaleString('ro-RO', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -825,6 +831,27 @@ $(document).ready(function () {
             // adaugam valuta in elementul strong
             $(this).next('strong').text(currentMoneyType);
         });
+
+        // calculam procentajul atins pana la discount
+        let percentage = (total / freeShippingThreshold) * 100;
+
+        // nu sarim peste limita
+        if (percentage > 100) {
+            percentage = 100;
+        }
+
+        // animam bara
+        $('#shipping-bar').css('width', percentage + '%');
+
+        // actualizăm textul informativ
+        if (total >= freeShippingThreshold) {
+            $('#shipping-info').html('<span style="color: green; font-weight: bold;"> Livrare gratuită</span>');
+            $('#shipping-bar').css('background', 'red');
+        } else {
+            let remaining = freeShippingThreshold - total;
+            $('#shipping-info').text(`Mai adaugă ${remaining.toLocaleString('ro-RO')} RON pentru livrare gratuită`);
+            $('#shipping-bar').css('background', 'var(--primary-color)');
+        }
     }
 
     // apelam functia cand se face o schimbare in campurile definite
