@@ -904,7 +904,7 @@ $(document).ready(function () {
             // facem casutele editabile
             $title.attr('contenteditable', 'true');
             $description.attr('contenteditable', 'true');
-            
+
             // luam statusul curent
             const currentStatus = $status.text().trim();
 
@@ -946,6 +946,9 @@ $(document).ready(function () {
         $card.find('.progress-bar').css('width', '100%');
         $card.find('.card-tag').html('Finalizat');
         $card.removeClass('priority-high');
+
+        // ascundem butonul de editare
+        $card.find('.editTask').hide();
     }
 
     // mapam functiile pe butoane
