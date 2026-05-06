@@ -721,6 +721,7 @@ th, td {
     text-transform: uppercase;
     font-weight: bold;
     margin-bottom: 10px;
+    background-color: var(--primary-color);
 }
 
 .priority-high .card-tag {

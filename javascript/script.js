@@ -879,3 +879,62 @@ $(document).ready(function () {
     // la click pe buton facem conversia
     $('#btn-currency').on('click', changeMoneyType);
 })
+
+/* Functionalitate editare si finalizare task */
+
+$(document).ready(function() {
+    // selectam butoanele cu acele clase
+    let $editButton = $('.editTask');
+    let $finishButton = $('.finishTask');
+
+    function editTask() {
+        // luam cardurile cele mai apropiate de butoane
+        const $card = $(this).closest('.card');
+
+        // selectam butonul si ce vrem sa modificam
+        const $button = $(this);
+        const $title = $card.find('h2');
+        const $description = $card.find('p');
+        const $status = $card.find('.card-tag');
+
+        // adaugam proprietatea
+        const editing = $button.data('editing');
+
+        if (!editing) {
+            // facem casutele editabile
+            $title.attr('contenteditable', 'true');
+            $description.attr('contenteditable', 'true');
+            $status.attr('contenteditable', 'true');
+
+            $button.text('Salvează').data('editing', true)
+        } else {
+            // scoatem editabilitate
+            $title.removeAttr('contenteditable');
+            $description.removeAttr('contenteditable');
+            $status.removeAttr('contenteditable');
+
+            // daca statusul contine textul urgent il facem rosu
+            const statusText = $status.text().trim();
+            if (statusText.toLowerCase().includes('urgent')) {
+                $card.addClass('priority-high');
+            } else {
+                $card.removeClass('priority-high');
+            }
+
+            $button.text('Editează').data('editing', false)
+        }
+    }
+
+    function finishTask() {
+        const $card = $(this).closest('.card');
+
+        // la finalizare umplet bara si facem textul de status in finalizat
+        $card.find('.progress-bar').css('width', '100%');
+        $card.find('.card-tag').html('Finalizat');
+        $card.removeClass('priority-high');
+    }
+
+    // mapam functiile pe butoane
+    $editButton.on('click', editTask);
+    $finishButton.on('click', finishTask);
+})
