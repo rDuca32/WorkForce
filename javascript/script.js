@@ -795,8 +795,8 @@ $(document).ready(function () {
 
             // resetam bara de progres pentru livrare gratis
             $('#shipping-bar').css('width', '0%');
-            $('#shipping-info').text(`Mai adaugă ${freeShippingThreshold.toLocaleString('ro-RO', {maximumFractionDigits: 2})} ${currentMoneyType} pentru livrare gratuită.`);            
-            
+            $('#shipping-info').text(`Mai adaugă ${freeShippingThreshold.toLocaleString('ro-RO', { maximumFractionDigits: 2 })} ${currentMoneyType} pentru livrare gratuită.`);
+
             return;
         }
 
@@ -829,7 +829,7 @@ $(document).ready(function () {
         }
 
         // animam schimbarea pretului cu doua zecimale
-        $('#calc-total').stop(true, true).fadeOut(100, function() {
+        $('#calc-total').stop(true, true).fadeOut(100, function () {
             $(this).text(showTotal.toLocaleString('ro-RO', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -856,7 +856,7 @@ $(document).ready(function () {
             $('#shipping-bar').css('background', 'forestgreen');
         } else {
             let remaining = freeShippingThreshold - showTotal;
-            $('#shipping-info').text(`Mai adaugă ${remaining.toLocaleString('ro-RO', {maximumFractionDigits: 2})} ${currentMoneyType} pentru livrare gratuită`);
+            $('#shipping-info').text(`Mai adaugă ${remaining.toLocaleString('ro-RO', { maximumFractionDigits: 2 })} ${currentMoneyType} pentru livrare gratuită`);
             $('#shipping-bar').css('background', 'var(--primary-color)');
         }
     }
@@ -882,7 +882,7 @@ $(document).ready(function () {
 
 /* Functionalitate editare si finalizare task */
 
-$(document).ready(function() {
+$(document).ready(function () {
     // selectam butoanele cu acele clase
     let $editButton = $('.editTask');
     let $finishButton = $('.finishTask');
@@ -904,8 +904,19 @@ $(document).ready(function() {
             // facem casutele editabile
             $title.attr('contenteditable', 'true');
             $description.attr('contenteditable', 'true');
-            $status.attr('contenteditable', 'true');
+            
+            // luam statusul curent
+            const currentStatus = $status.text().trim();
 
+            // cream dropdown cu valoarea selectata din status curent
+            const $select = $('<select>').html(`
+                <option>Urgent</option>
+                <option>Normal</option>
+                <option>Lejer</option>
+                <option>Optional</option>
+            `).val(currentStatus);
+
+            $status.html('').append($select);
             $button.text('Salvează').data('editing', true)
         } else {
             // scoatem editabilitate
@@ -913,9 +924,12 @@ $(document).ready(function() {
             $description.removeAttr('contenteditable');
             $status.removeAttr('contenteditable');
 
+            // luam statusul selectat
+            const selectedStatus = $status.find('select').val();
+            $status.text(selectedStatus);
+
             // daca statusul contine textul urgent il facem rosu
-            const statusText = $status.text().trim();
-            if (statusText.toLowerCase().includes('urgent')) {
+            if (selectedStatus.toLowerCase().includes('urgent')) {
                 $card.addClass('priority-high');
             } else {
                 $card.removeClass('priority-high');
