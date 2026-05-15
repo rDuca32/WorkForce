@@ -52,16 +52,16 @@
                     </ul>
                 </li>
                 <li>
-                    Manager
+                    Patron
                     <ul>
                         <li>Acces la a vedea muncitorii</li>
                         <li>Acces la sarcinile muncitorilor</li>
                     </ul>
                 </li>
                 <li>
-                    Muncitor
+                    Angajat
                     <ul>
-                        <li>Acces la propriile sarcini</li>
+                        <li>Acces la propriile sarcini sau a șantierelor pentru manageri</li>
                     </ul>
                 </li>
             </ul>
