@@ -10,19 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"] ?? '');
     $password = $_POST["password_register"] ?? '';
     
-    // Setăm rolul implicit pentru conturile noi
+    // Setam rolul implicit pentru conturile noi
     $role = 'angajat';
     $job_title = 'muncitor'; 
     $team = 'Fără echipă';
     
-    // Securizăm parola
+    // Securizam parola
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $profile_pic = "default.png";
     
-    // Tratarea încărcării fișierului
+    // Incarcarea fisierului
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $upload_dir = 'uploads/';
-        // Creăm folderul dacă nu există
+        // Cream folderul daca nu exista
         if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
         
         $file_ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-    // Inserarea în baza de date
+    // Inserarea in baza de date
     if (empty($error)) {
         $sql = "INSERT INTO users (username, password, email, role, job_title, team, profile_pic) VALUES (?, ?, ?, ?, ?, ?, ?)";
         if ($stmt = $conn->prepare($sql)) {

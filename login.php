@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"] ?? '');
     $password = trim($_POST["password"] ?? '');
 
-    // Extragem datele utilizatorului, inclusiv noile câmpuri de rol și job
+    // Extragem datele utilizatorului
     $sql = "SELECT id, username, password, role, job_title, team, profile_pic FROM users WHERE username = ?";
     
     if ($stmt = $conn->prepare($sql)) {
@@ -19,18 +19,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             
-            // Verificăm hash-ul parolei
+            // Verificam hash-ul parolei
             if (password_verify($password, $user['password'])) {
                 
-                // Setăm datele în sesiune (Cerință Laborator 1p - Persistența sesiunii)
+                // Setam datele in sesiune
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role'];             // admin / patron / angajat
-                $_SESSION['job_title'] = $user['job_title'];   // muncitor / manager_santier / none
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['job_title'] = $user['job_title'];
                 $_SESSION['team'] = $user['team'];
                 $_SESSION['profile_pic'] = $user['profile_pic'];
                 
-                // Redirecționare către pagina principală după logare reușită
+                // Redirectionare catre pagina principala dupa logare reusita
                 header("Location: index.php"); 
                 exit();
             } else {

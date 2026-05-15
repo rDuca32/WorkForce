@@ -28,11 +28,18 @@
 
             <?php if (isset($_SESSION['user_id'])): ?>
                 <li>
+                    <a href="profile.php" title="Profilul meu">
+                        <i class="fa-solid fa-circle-user" style="font-size: 1.2rem;"></i> Profil
+                    </a>
+                </li>
+                
+                <li>
                     <a href="logout.php" style="color: white; font-weight: bold;">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout (<?php echo $_SESSION['username']; ?>)
                     </a>
                 </li>
             <?php endif; ?>
+            
         </ul>
     </nav>
 </header>
