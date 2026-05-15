@@ -1,4 +1,4 @@
-// Validare text pentru pagina de Login
+// Validare text
 
 function validateText(event) {
     const limit = /^[0-9a-z]+$/;
@@ -18,11 +18,6 @@ function validateText(event) {
 const usernameInput = document.getElementById("username");
 if (usernameInput) {
     usernameInput.addEventListener('input', validateText);
-}
-
-const passwordInputLogin = document.getElementById("password");
-if (passwordInputLogin) {
-    passwordInputLogin.addEventListener('input', validateText);
 }
 
 
@@ -187,10 +182,11 @@ function validateFormOnSubmit(event) {
     const form = event.target;
 
     if (form.querySelector("#username")) validateText({ target: form.querySelector("#username") });
-    if (form.querySelector("#password")) validateText({ target: form.querySelector("#password") });
 
+    if (form.querySelector("#password")) validatePassword({ target: form.querySelector("#password") });
     if (form.querySelector("#password_register")) validatePassword({ target: form.querySelector("#password_register") });
     if (form.querySelector("#password_confirmation")) validatePassword({ target: form.querySelector("#password_confirmation") });
+    
     if (form.querySelector("#email")) validateEmail({ target: form.querySelector("#email") });
     if (form.querySelector("#phone")) validatePhone({ target: form.querySelector("#phone") });
     if (form.querySelector("#date")) validateDate({ target: form.querySelector("#date") });
@@ -204,20 +200,11 @@ function validateFormOnSubmit(event) {
         }
     });
 
-    const ageInput = form.querySelector("#age");
     const confirmCheckbox = form.querySelector("#confirm");
 
-    let isAgeValid = true;
     let isConfirmValid = true;
 
     let matchingPasswords = true;
-
-    if (ageInput) {
-        const age = ageInput.value;
-        if (age < 18 || age > 70 || age === "") {
-            isAgeValid = false;
-        }
-    }
 
     if (confirmCheckbox) {
         isConfirmValid = confirmCheckbox.checked;
@@ -232,7 +219,7 @@ function validateFormOnSubmit(event) {
         }
     }
 
-    if (allDotsValid && isAgeValid && isConfirmValid && matchingPasswords) {
+    if (allDotsValid && isConfirmValid && matchingPasswords) {
         alert("Succes!");
         // form.submit();
     } else {

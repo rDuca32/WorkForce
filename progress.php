@@ -16,34 +16,7 @@
 
 <body>
 
-    <header>
-        <nav>
-            <img class="logo" src="assets/logo.png" alt="logo">
-            <ul class="menu">
-                <li><a href="index.html">Acasă</a></li>
-
-                <li>
-                    <a href="auth.html">Autentificare <i class="fa-solid fa-chevron-down menu-icon"></i></a>
-                    <ul class="submenu">
-                        <li><a href="login.html">Conectare</a></li>
-                        <li><a href="register.html">Înregistrare</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="tasks.html">Sarcini</a></li>
-
-                <li>
-                    <a href="monitoring.html">Monitorizare <i class="fa-solid fa-chevron-down menu-icon"></i></a>
-                    <ul class="submenu">
-                        <li><a href="worksites.html">Șantiere</a></li>
-                        <li><a href="progress.html">Progres</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="users.html">Utilizatori</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php include 'header.php'; ?>
 
     <main>
         <section class="stats-overview">
@@ -85,15 +58,7 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 WorkForce. Toate drepturile rezervate.</p>
-
-        <div class="social-links">
-            <a href="#" class="sprite-icon icon-fb" title="Facebook"></a>
-            <a href="#" class="sprite-icon icon-ig" title="Instagram"></a>
-            <a href="#" class="sprite-icon icon-yt" title="Youtube"></a>
-        </div>
-    </footer>
+    <?php include 'footer.php'; ?>
 
 </body>
 

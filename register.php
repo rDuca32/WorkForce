@@ -16,34 +16,7 @@
 
 <body>
 
-    <header>
-        <nav>
-            <img class="logo" src="assets/logo.png" alt="logo">
-            <ul class="menu">
-                <li><a href="index.html">Acasă</a></li>
-
-                <li>
-                    <a href="auth.html">Autentificare <i class="fa-solid fa-chevron-down menu-icon"></i></a>
-                    <ul class="submenu">
-                        <li><a href="login.html">Conectare</a></li>
-                        <li><a href="register.html">Înregistrare</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="tasks.html">Sarcini</a></li>
-
-                <li>
-                    <a href="monitoring.html">Monitorizare <i class="fa-solid fa-chevron-down menu-icon"></i></a>
-                    <ul class="submenu">
-                        <li><a href="worksites.html">Șantiere</a></li>
-                        <li><a href="progress.html">Progres</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="users.html">Utilizatori</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php include 'header.php'; ?>
 
     <main id="registration">
 
@@ -62,9 +35,6 @@
                 <input id="phone" type="tel" name="phone" placeholder="Telefon">
                 <span class="status-dot"></span>
             </div>
-
-            <label for="address">Adresă:</label>
-            <input id="address" type="text" name="address" placeholder="Adresă">
 
             <label for="username">Nume de utilizator:</label>
             <div class="form-helper">
@@ -90,14 +60,8 @@
                 <span class="status-dot"></span>
             </div>
 
-            <label for="age">Vârstă:</label>
-            <input id="age" type="number" name="age" placeholder="Vârstă" min="18" max="70" step="1">
-
             <label for="photo">Poză de profil:</label>
             <input id="photo" type="file" name="photo">
-
-            <label for="country">Țară:</label>
-            <input id="country" type="text" name="country" value="România" readonly>
 
             <label for="country">Județ:</label>
             <select id="county" name="county">
@@ -109,23 +73,6 @@
                 <option value="">Alege județul prima dată</option>
             </select>
 
-            <label for="job">Meserie:</label>
-            <input id="job" list="job-list" name="job" placeholder="Scrie sau alege meseria">
-            <datalist id="job-list">
-                <option value="Inginer Constructor"></option>
-                <option value="Arhitect"></option>
-                <option value="Zidar"></option>
-                <option value="Electrician"></option>
-                <option value="Instalator"></option>
-                <option value="Manager de Proiect"></option>
-            </datalist>
-
-            <label>Genul:</label>
-            <select name="gender">
-                <option value="none">Niciunul</option>
-                <option value="m">Masculin</option>
-                <option value="f">Feminin</option>
-            </select>
             <br>
 
             <label>
@@ -134,16 +81,6 @@
             </label>
 
             <br>
-
-            <p>Doriți notificări?</p>
-
-            <label>
-                <input type="radio" name="notifications" value="yes"> DA
-            </label>
-
-            <label>
-                <input type="radio" name="notifications" value="no"> NU
-            </label>
 
             <label>Inregistrându-vă înseamnă că sunteți de acord cu termenii și condițiile.</label>
 
@@ -154,15 +91,7 @@
 
     </main>
 
-    <footer>
-        <p>&copy; 2026 WorkForce. Toate drepturile rezervate.</p>
-
-        <div class="social-links">
-            <a href="#" class="sprite-icon icon-fb" title="Facebook"></a>
-            <a href="#" class="sprite-icon icon-ig" title="Instagram"></a>
-            <a href="#" class="sprite-icon icon-yt" title="Youtube"></a>
-        </div>
-    </footer>
+    <?php include 'footer.php'; ?>
 
 </body>
 

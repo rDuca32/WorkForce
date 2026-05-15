@@ -16,34 +16,7 @@
 
 <body>
 
-    <header>
-        <nav>
-            <img class="logo" src="assets/logo.png" alt="logo">
-            <ul class="menu">
-                <li><a href="index.html">Acasă</a></li>
-
-                <li>
-                    <a href="auth.html">Autentificare <i class="fa-solid fa-chevron-down menu-icon"></i></a>
-                    <ul class="submenu">
-                        <li><a href="login.html">Conectare</a></li>
-                        <li><a href="register.html">Înregistrare</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="tasks.html">Sarcini</a></li>
-
-                <li>
-                    <a href="monitoring.html">Monitorizare <i class="fa-solid fa-chevron-down menu-icon"></i></a>
-                    <ul class="submenu">
-                        <li><a href="worksites.html">Șantiere</a></li>
-                        <li><a href="progress.html">Progres</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="users.html">Utilizatori</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php include 'header.php'; ?>
     
     <main>
         <section class="slider-section">
@@ -107,18 +80,40 @@
                 </div>
                 
             </div>
+
+            <div id="fallingSlider">
+
+            <div id="vertical-slide-container">
+                <div id="prev-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-up"></i></div>
+
+                <div id="images-wrapper">
+                    <img src="assets/santier1.jpg" alt="santier1">
+                    <img src="assets/santier2.jpg" alt="santier2">
+                    <img src="assets/santier3.jpg" alt="santier3">
+                    <img src="assets/santier4.jpg" alt="santier4">
+                    <video src="assets/worksite.mp4" alt="worksite" autoplay muted></video>
+                </div>
+
+                <div id="next-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+
+            <div class="control-panel">
+                <label for="imgCount">Nr. de imagini:</label>
+                <input id="imgCount" type="number" name="imgCount" value="2" min="1" max="5" placeholder="Nr. de imagini">
+
+                <label for="speedCount">Nr. de secunde:</label>
+                <input id="speedCount" type="number" name="speedCount" value="1" min="1" max="5" step="1" placeholder="Nr. de secunde">
+
+                <button id="startSlider">Aplică</button>
+            </div>
+            
+        </div>
+
         </section>
+        
     </main>
 
-    <footer>
-        <p>&copy; 2026 WorkForce. Toate drepturile rezervate.</p>
-
-        <div class="social-links">
-            <a href="#" class="sprite-icon icon-fb" title="Facebook"></a>
-            <a href="#" class="sprite-icon icon-ig" title="Instagram"></a>
-            <a href="#" class="sprite-icon icon-yt" title="Youtube"></a>
-        </div>
-    </footer>
+    <?php include 'footer.php'; ?>
     
 </body>
 </html>
