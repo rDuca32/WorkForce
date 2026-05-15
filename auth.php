@@ -23,8 +23,8 @@
         <div class="auth">
             <h1>Autentificare</h1>
 
-            <p>Ai cont? <a href="./login.html">Conectare</a></p>
-            <p>Vrei un cont? <a href="./register.html">Înregistrare</a></p>
+            <p>Ai cont? <a href="./login.php">Conectare</a></p>
+            <p>Vrei un cont? <a href="./register.php">Înregistrare</a></p>
         </div>
 
     </main>
