@@ -20,8 +20,8 @@
 
     <main>
         <section class="page-title">
-            <h1>Panou de Control</h1>
-            <p>Monitorizare progres șantier în timp real.</p>
+            <h1>Sarcinile mele</h1>
+            <p>Progres sarcini în timp real.</p>
         </section>
 
         <div class="task-grid">
@@ -61,49 +61,6 @@
             </article>
 
         </div>
-
-        <section style="margin-top: 25px;">
-            <h2 style="text-align: center;">Calculator materiale</h2>
-
-            <div id="calculator-wrapper">
-                <div>
-                    <label for="calc-material"><strong>Tip material</strong></label>
-                    <select id="calc-material"></select>
-                </div>
-
-                <div>
-                    <label for="calc-quantity">Cantitatea necesară</label>
-                    <input id="calc-quantity" type="number" min="1" value="1">
-                    <small id="discount-message">
-                        <i class="fa-solid fa-tag"></i> Ai primit o reducere de 10%
-                    </small>
-                </div>
-
-                <div>
-                    <label>
-                        <input id="calc-urgent" type="checkbox">
-                        <strong>Livrare urgentă</strong> (+100 RON taxă)
-                    </label>
-                </div>
-
-                <div style="margin-top: 15px; text-align: center;">
-                    <button id="btn-currency" data-currency="RON">
-                        <i class="fa-solid fa-money-bill-transfer"></i> Schimbă în EURO
-                    </button>
-                </div>
-
-                <div style="font-size: 18px; margin-top: 20px;">
-                    Cost total estimat:
-                    <span id="calc-total">0</span>
-                    <strong>RON</strong>
-                </div>
-
-                <div id="shipping-progress-container">
-                    <div id="shipping-bar"></div>
-                </div>
-                <p id="shipping-info" style="font-size: 14px; margin-top: 5px;">Mai adaugă pentru livrare gratuită</p>
-            </div>
-        </section>
 
     </main>
 

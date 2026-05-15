@@ -264,8 +264,8 @@
     <div class="progress-links">
         <h1>Pagini relevante</h1>
 
-        <a href="./worksites.html">Șantiere</a>
-        <a href="./progress.html">Progres</a>
+        <a href="./progress.php">Progres</a>
+        <a href="./gallery.php">Galerie</a>
     </div>
 
     <div id="info-kaufland" class="hidden-info">
