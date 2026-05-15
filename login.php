@@ -6,7 +6,7 @@ $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"] ?? '');
-    $password = $_POST["password"] ?? '';
+    $password = trim($_POST["password"] ?? '');
 
     // Extragem datele utilizatorului, inclusiv noile câmpuri de rol și job
     $sql = "SELECT id, username, password, role, job_title, team, profile_pic FROM users WHERE username = ?";

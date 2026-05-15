@@ -43,6 +43,11 @@ function validatePassword(event) {
     }
 }
 
+const password = document.querySelector("#password");
+if (password) {
+    password.addEventListener('input', validatePassword);
+}
+
 const passwordRegister = document.querySelector("#password_register");
 if (passwordRegister) {
     passwordRegister.addEventListener('input', validatePassword);
@@ -221,7 +226,7 @@ function validateFormOnSubmit(event) {
 
     if (allDotsValid && isConfirmValid && matchingPasswords) {
         alert("Succes!");
-        // form.submit();
+        form.submit();
     } else {
         alert("Eroare!");
     }
