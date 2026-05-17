@@ -2,14 +2,14 @@
 include 'check_auth.php'; 
 include 'db.php';
 
-// 1. VERIFICARE ROL - Acces doar pentru Admin si Patron
+// Verificare rol - Acces doar pentru Admin si Patron
 $role = $_SESSION['role'] ?? '';
 if ($role !== 'admin' && $role !== 'patron') {
     echo "<script>alert('Acces restrictionat! Doar Adminii si Patronii au acces la aceasta pagina.'); window.location.href='index.php';</script>";
     exit();
 }
 
-// 2. FETCH SANTIERE (Folosim LEFT JOIN pentru a lua numele managerului folosind manager_id)
+// 2. FETCH santiere (Folosim LEFT JOIN pentru a lua numele managerului folosind manager_id)
 $sql_worksites = "
     SELECT w.*, u.username as manager_name 
     FROM worksites w 
@@ -25,7 +25,7 @@ $worksites = $result_ws ? $result_ws->fetch_all(MYSQLI_ASSOC) : [];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Santiere - WorkForce</title>
+    <title>WorkForce - Șantiere</title>
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -86,7 +86,7 @@ $worksites = $result_ws ? $result_ws->fetch_all(MYSQLI_ASSOC) : [];
                         <?php 
                         $ws_id = $ws['id'];
                         
-                        // Extragem ECHIPELE implicate in acest santier
+                        // Extragem echipele implicate in acest santier
                         $sql_teams = "SELECT u.team, COUNT(u.id) as nr_muncitori, GROUP_CONCAT(DISTINCT u.username SEPARATOR ', ') as membri 
                                       FROM tasks t JOIN users u ON t.user_id = u.id 
                                       WHERE t.worksite_id = ? AND u.team IS NOT NULL 
@@ -96,7 +96,7 @@ $worksites = $result_ws ? $result_ws->fetch_all(MYSQLI_ASSOC) : [];
                         $stmt_teams->execute();
                         $teams = $stmt_teams->get_result()->fetch_all(MYSQLI_ASSOC);
 
-                        // Extragem SARCINILE pentru acest santier
+                        // Extragem taskurile pentru acest santier
                         $sql_tasks = "SELECT t.title, t.status, t.description, t.progress, u.team 
                                       FROM tasks t LEFT JOIN users u ON t.user_id = u.id 
                                       WHERE t.worksite_id = ?";

@@ -11,6 +11,7 @@ $galleryMessageType = 'success';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_gallery']) && $can_manage_gallery) {
     $worksite_id = intval($_POST['worksite_id'] ?? 0);
     if ($worksite_id > 0 && isset($_FILES['gallery_image']) && $_FILES['gallery_image']['error'] === UPLOAD_ERR_OK) {
+        // Folderul de gallery din uploads, daca nu exista le cream
         $upload_dir = 'uploads/gallery/';
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
@@ -53,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_gallery']) && 
     exit();
 }
 
+// Daca avem un mesaj in sesiune de la upload/sterge, il afisam o singura data
 if (isset($_SESSION['gallery_message'])) {
     $galleryMessage = $_SESSION['gallery_message'];
     $galleryMessageType = $_SESSION['gallery_message_type'] ?? 'success';
@@ -85,11 +87,12 @@ if (isset($_GET['delete_id']) && $can_manage_gallery) {
     exit();
 }
 
+// Selectam santierele
 $worksites_sql = "SELECT id, name FROM worksites ORDER BY name ASC";
 $worksites_result = $conn->query($worksites_sql);
 $worksites = $worksites_result ? $worksites_result->fetch_all(MYSQLI_ASSOC) : [];
 
-// Fetch imaginile din tabelul de galerie + numele santierului aferent
+// Fetch imaginile din tabelul de galerie + numele santierului
 $sql = "
     SELECT wg.id, wg.image_path, w.name as worksite_name 
     FROM worksite_gallery wg 
@@ -97,6 +100,7 @@ $sql = "
 ";
 $result = $conn->query($sql);
 $images = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+
 ?>
 <!DOCTYPE html>
 <html lang="ro">

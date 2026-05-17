@@ -3,7 +3,7 @@ include 'check_auth.php';
 include 'db.php'; 
 
 $role = $_SESSION['role'];
-$job = $_SESSION['job_title'] ?? ''; // Folosim job_title pentru a identifica managerii
+$job = $_SESSION['job_title'] ?? ''; // Pentru a identifica managerii
 
 $users = [];
 
@@ -31,10 +31,11 @@ if ($role === 'admin') {
 
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkForce</title>
+    <title>WorkForce - Utilizatori</title>
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -42,6 +43,7 @@ if ($role === 'admin') {
     <script src="javascript/script.js" defer></script>
     <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
+
 <body>
 
     <?php include 'header.php'; ?>

@@ -15,6 +15,7 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Selectam noile valori
     $new_email = trim($_POST['email']);
     $new_username = trim($_POST['username']);
     $profile_pic = $user['profile_pic']; // Pastram poza veche implicit
@@ -32,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $allowed_exts = ['jpg', 'jpeg', 'png', 'gif'];
 
         if (in_array($file_ext, $allowed_exts)) {
+            // Definim numele imaginii cu extensia
             $new_filename = uniqid('profile_') . '.' . $file_ext;
             
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $upload_dir . $new_filename)) {
@@ -48,11 +50,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = "Format imagine invalid.";
         } 
     } elseif (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-        // Eroare daca poza e prea mare
+        // Eroare daca poza e prea mare de ex
         $error = "Eroare la încărcare.";
     }
 
-    // 3. UPDATE in Baza de Date
+    // UPDATE in Baza de Date
     if (empty($error)) {
         $update_sql = "UPDATE users SET username = ?, email = ?, profile_pic = ? WHERE id = ?";
         $update_stmt = $conn->prepare($update_sql);
@@ -74,10 +76,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkForce</title>
+    <title>WorkForce - Editare Profil</title>
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -85,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="javascript/script.js" defer></script>
     <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
+
 <body>
 
     <?php include 'header.php'; ?>

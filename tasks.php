@@ -4,20 +4,21 @@ include 'db.php';
 
 $user_id = $_SESSION['user_id'];
 
-// --- 1. Aducem lista de șantiere pentru dropdown-ul din formular ---
+// Aducem lista de șantiere pentru dropdown-ul din formular
 $worksites_sql = "SELECT id, name FROM worksites ORDER BY name ASC";
 $worksites_result = $conn->query($worksites_sql);
 $worksites = $worksites_result ? $worksites_result->fetch_all(MYSQLI_ASSOC) : [];
 
-// 2. CREATE - Adaugare task nou 
+// CREATE - Adaugare task nou 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_task'])) {
+    // Selectam valorile si punem implicit ca nu e inceput
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
     $worksite_id = !empty($_POST['worksite_id']) ? intval($_POST['worksite_id']) : NULL;
     $status = 'Neîncepută';
     $progress = 0;
     
-    // Adaugam si worksite_id in insert
+    // Adaugam valorile in tabel
     $sql_insert = "INSERT INTO tasks (user_id, worksite_id, title, description, status, progress) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql_insert);
     $stmt->bind_param("iisssi", $user_id, $worksite_id, $title, $description, $status, $progress);
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_task'])) {
     exit();
 }
 
-// 3. DELETE - Stergerea unui task
+// DELETE - Stergerea unui task
 if (isset($_GET['delete_id'])) {
     $del_id = intval($_GET['delete_id']);
     $sql_delete = "DELETE FROM tasks WHERE id = ? AND user_id = ?";
@@ -39,7 +40,7 @@ if (isset($_GET['delete_id'])) {
     exit();
 }
 
-// 4. UPDATE RAPID - Finalizarea unui task SI a subtaskurilor
+// UPDATE - Finalizarea unui task si a subtaskurilor
 if (isset($_GET['finish_id'])) {
     $finish_id = intval($_GET['finish_id']);
     
@@ -49,11 +50,13 @@ if (isset($_GET['finish_id'])) {
     $check_stmt->execute();
     
     if ($check_stmt->get_result()->num_rows > 0) {
+        // Setam progresul si statusul
         $sql_update_task = "UPDATE tasks SET progress = 100, status = 'Finalizată' WHERE id = ?";
         $stmt_task = $conn->prepare($sql_update_task);
         $stmt_task->bind_param("i", $finish_id);
         $stmt_task->execute();
         
+        // Marcam si sub-taskurile ca fiind completate
         $sql_update_subs = "UPDATE subtasks SET is_completed = 1 WHERE task_id = ?";
         $stmt_subs = $conn->prepare($sql_update_subs);
         $stmt_subs->bind_param("i", $finish_id);
@@ -64,8 +67,7 @@ if (isset($_GET['finish_id'])) {
     exit();
 }
 
-// 5. READ - Extragem task-urile userului curent + NUMELE ȘANTIERULUI
-// Folosim LEFT JOIN pentru a aduce w.name (numele santierului din tabelul worksites)
+// READ - Extragem task-urile userului curent + numele santierului
 $sql_select = "
     SELECT t.id, t.title, t.description, t.status, t.progress, w.name as worksite_name 
     FROM tasks t 
@@ -82,6 +84,7 @@ $tasks = $result->fetch_all(MYSQLI_ASSOC);
 
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,6 +96,7 @@ $tasks = $result->fetch_all(MYSQLI_ASSOC);
     <script src="javascript/script.js" defer></script>
     <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
+
 <body>
     <?php include 'header.php'; ?>
 

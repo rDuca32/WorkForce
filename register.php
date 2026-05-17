@@ -6,6 +6,7 @@ $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Extragem valorile din form
     $email = trim($_POST["email"] ?? '');
     $username = trim($_POST["username"] ?? '');
     $password = $_POST["password_register"] ?? '';
@@ -58,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,9 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="description" content="Aplicație destinată managerilor de șantiere">
     <script src="javascript/script.js" defer></script>
     <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
+
 <body>
 
     <?php include 'header.php'; ?>

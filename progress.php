@@ -6,7 +6,7 @@ $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 $job = $_SESSION['job_title'] ?? '';
 
-// 1. Aflam din ce echipa face parte utilizatorul curent
+// Afla echipa curenta a utilizatorului din baza de date
 $team_sql = "SELECT team FROM users WHERE id = ?";
 $stmt = $conn->prepare($team_sql);
 $stmt->bind_param("i", $user_id);
@@ -14,10 +14,10 @@ $stmt->execute();
 $user_data = $stmt->get_result()->fetch_assoc();
 $user_team = $user_data['team'] ?? 'Fara echipa';
 
-// Permisiunea globala pentru butoane
+// Flag global pentru permisiunea de editare/stergere a taskurilor
 $can_edit = ($role === 'admin' || $role === 'patron' || $job === 'manager_santier');
 
-// === HANDLERE PENTRU ACTIUNI (Stergere / Finalizare) ===
+// Proceseaza cererile de stergere daca utilizatorul are permisiune
 if (isset($_GET['delete_id']) && $can_edit) {
     $del_id = intval($_GET['delete_id']);
 
@@ -40,6 +40,7 @@ if (isset($_GET['finish_id']) && $can_edit) {
     $finish_id = intval($_GET['finish_id']);
     $allowed = false;
 
+    // Doar admin/patron pot finaliza orice task, ceilalti doar din echipa lor
     if ($role === 'admin' || $role === 'patron') {
         $allowed = true;
     } else {
@@ -52,6 +53,7 @@ if (isset($_GET['finish_id']) && $can_edit) {
     }
 
     if ($allowed) {
+        // Marcheaza task ca finalizat si bifeaza toate subtasks ca finalizate
         $sql_update_task = "UPDATE tasks SET progress = 100, status = 'Finalizată' WHERE id = ?";
         $stmt_task = $conn->prepare($sql_update_task);
         $stmt_task->bind_param("i", $finish_id);
@@ -67,7 +69,7 @@ if (isset($_GET['finish_id']) && $can_edit) {
 }
 
 
-// 2. Extragem datele in functie de rol (ADĂUGĂM LEFT JOIN WORKSITES)
+// Incarca taskurile in functie de rolul si echipa utilizatorului curent
 $tasks = [];
 if ($role === 'admin' || $role === 'patron') {
     $sql = "SELECT t.*, u.username, u.team, w.name as worksite_name 
@@ -93,7 +95,7 @@ if ($role === 'admin' || $role === 'patron') {
         $tasks = $result->fetch_all(MYSQLI_ASSOC);
 }
 
-// 3. Calculam statisticile dinamice
+// Calculeaza statisticile pentru afisajul de bord al taskurilor
 $total_tasks = count($tasks);
 $active_tasks = 0;
 $total_progress = 0;
@@ -108,7 +110,7 @@ foreach ($tasks as $t) {
 }
 $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
 
-// Extragem materialele pentru calculator
+// Incarca materialele pentru sectiunea calculatorului de pret
 $sql_materials = "SELECT id, name, price_per_unit FROM materials";
 $result_materials = $conn->query($sql_materials);
 $materials = $result_materials ? $result_materials->fetch_all(MYSQLI_ASSOC) : [];
@@ -121,10 +123,11 @@ $materials = $result_materials ? $result_materials->fetch_all(MYSQLI_ASSOC) : []
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progres - WorkForce</title>
+    <title>WorkForce - Progres</title>
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="description" content="Aplicație destinată managerilor de șantiere">
     <script src="javascript/script.js" defer></script>
     <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>

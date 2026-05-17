@@ -7,14 +7,14 @@ $role = $_SESSION['role'];
 $job = $_SESSION['job_title'] ?? '';
 $task_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// 1. Aflam echipa userului curent
+// Aflam echipa userului curent
 $team_sql = "SELECT team FROM users WHERE id = ?";
 $stmt = $conn->prepare($team_sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $user_team = $stmt->get_result()->fetch_assoc()['team'] ?? '';
 
-// 2. Extragem task-ul dorit SI echipa celui care l-a creat
+// Extragem task-ul dorit si echipa celui care l-a creat
 $sql = "SELECT t.*, u.team as task_team FROM tasks t JOIN users u ON t.user_id = u.id WHERE t.id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $task_id);
@@ -25,7 +25,7 @@ if (!$task) {
     die("Sarcina nu exista in baza de date.");
 }
 
-// 3. LOGICA DE PERMISIUNI (Cine are voie sa editeze)
+// Logica de permisiuni
 $can_edit = false;
 if ($role === 'admin' || $role === 'patron') {
     $can_edit = true; // Au acces peste tot
@@ -39,8 +39,9 @@ if (!$can_edit) {
     die("Acces respins! Nu ai permisiunea de a edita aceasta sarcina.");
 }
 
-// === 1. UPDATE DETALII TASK ===
+// UPDATE detalii task
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_task'])) {
+    // Selectam titlul si descrierea
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
     
@@ -53,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_task'])) {
     exit();
 }
 
-// === 2. ADAUGA SUBTASK ===
+// ADD subtask
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_subtask'])) {
     $sub_title = trim($_POST['subtask_title']);
     
@@ -67,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_subtask'])) {
     exit();
 }
 
-// === 3. TOGGLE SUBTASK (Bifeaza / Debifeaza) ===
+// TOGGLE subtask
 if (isset($_GET['toggle_sub'])) {
     $sub_id = intval($_GET['toggle_sub']);
     $toggle_sql = "UPDATE subtasks SET is_completed = NOT is_completed WHERE id = ? AND task_id = ?";
@@ -80,7 +81,7 @@ if (isset($_GET['toggle_sub'])) {
     exit();
 }
 
-// === 4. DELETE SUBTASK ===
+// DELETE subtask
 if (isset($_GET['delete_sub'])) {
     $sub_id = intval($_GET['delete_sub']);
     $del_sub = "DELETE FROM subtasks WHERE id = ? AND task_id = ?";
@@ -93,7 +94,7 @@ if (isset($_GET['delete_sub'])) {
     exit();
 }
 
-// === FUNCTIE DE CALCUL PROGRES ===
+// Functie pentru a calcula progresul
 function recalculate_progress($conn, $task_id) {
     $sql = "SELECT COUNT(*) as total, SUM(is_completed) as done FROM subtasks WHERE task_id = ?";
     $stmt = $conn->prepare($sql);
@@ -104,12 +105,14 @@ function recalculate_progress($conn, $task_id) {
     $total = $res['total'];
     $done = $res['done'] ? $res['done'] : 0;
     
+    // Calculam raportul completarii
     if ($total > 0) {
         $progress = round(($done / $total) * 100);
     } else {
         $progress = 0;
     }
     
+    // Returnam statusul
     $status = ($progress == 100) ? 'Finalizată' : (($progress > 0) ? 'În lucru' : 'Neîncepută');
     
     $update = "UPDATE tasks SET progress = ?, status = ? WHERE id = ?";
@@ -128,14 +131,19 @@ $subtasks = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editeaza Sarcina - WorkForce</title>
+    <title>WorkForce - Editare Sarcină</title>
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="description" content="Aplicație destinată managerilor de șantiere">
+    <script src="javascript/script.js" defer></script>
+    <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
+
 <body>
     <?php include 'header.php'; ?>
 
@@ -154,6 +162,9 @@ $subtasks = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                     Salvează Modificările
                 </button>
             </form>
+            <br>
+            <a href="tasks.php" class="link-muted"><i class="fa-solid fa-arrow-left"></i> Înapoi la sarcini</a>
+            <br>
             <br>
             <a href="progress.php" class="link-muted"><i class="fa-solid fa-arrow-left"></i> Înapoi la progres</a>
         </section>
