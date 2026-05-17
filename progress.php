@@ -218,8 +218,7 @@ $materials = $result_materials ? $result_materials->fetch_all(MYSQLI_ASSOC) : []
             <div id="calculator-wrapper">
                 <div>
                     <label for="calc-material"><strong>Tip material</strong></label>
-                    <select id="calc-material"
-                        style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                    <select id="calc-material">
                         <option value="">-- Alege materialul --</option>
                         <?php foreach ($materials as $mat): ?>
                             <option value="<?php echo $mat['id']; ?>">

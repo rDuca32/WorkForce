@@ -35,7 +35,7 @@ $images = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
             <h2>Galerie șantiere</h2>
             
             <?php if(empty($images)): ?>
-                <p style="text-align: center;">Nu exista imagini incarcate in galeria niciunui santier.</p>
+                <p class="empty-gallery">Nu exista imagini incarcate in galeria niciunui santier.</p>
             <?php else: ?>
             
             <div class="slider">

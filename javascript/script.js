@@ -954,61 +954,8 @@ $(document).ready(function () {
 
 /* AJAX */
 
-/* Functionalitate editare si finalizare task */
-$(document).ready(function () {
-    let $editButton = $('.editTask');
-    let $finishButton = $('.finishTask');
-
-    function editTask() {
-        const $card = $(this).closest('.card');
-        const $button = $(this);
-        const $title = $card.find('h2');
-        const $description = $card.find('p').not('.worksite-meta'); // protejam textul cu santierul
-        const $status = $card.find('.card-tag');
-        const editing = $button.data('editing');
-
-        if (!editing) {
-            $title.attr('contenteditable', 'true');
-            $description.attr('contenteditable', 'true');
-            const currentStatus = $status.text().trim();
-            const $select = $('<select>').html(`
-                <option>Urgent</option>
-                <option>Normal</option>
-                <option>Lejer</option>
-                <option>Optional</option>
-            `).val(currentStatus);
-
-            $status.html('').append($select);
-            $button.text('Salvează').data('editing', true)
-        } else {
-            $title.removeAttr('contenteditable');
-            $description.removeAttr('contenteditable');
-            $status.removeAttr('contenteditable');
-            const selectedStatus = $status.find('select').val();
-            $status.text(selectedStatus);
-
-            if (selectedStatus.toLowerCase().includes('urgent')) {
-                $card.addClass('priority-high');
-            } else {
-                $card.removeClass('priority-high');
-            }
-            $button.text('Editează').data('editing', false)
-        }
-    }
-
-    function finishTask() {
-        const $card = $(this).closest('.card');
-        $card.find('.progress-bar').css('width', '100%');
-        $card.find('.card-tag').html('Finalizat');
-        $card.removeClass('priority-high');
-        $card.find('.editTask').hide();
-    }
-
-    $editButton.on('click', editTask);
-    $finishButton.on('click', finishTask);
-})
-
 /* AJAX: Trimitere Recenzie */
+
 $(document).ready(function() {
     $('#review-form').on('submit', function(e) {
         e.preventDefault(); 
@@ -1029,7 +976,9 @@ $(document).ready(function() {
     });
 });
 
-/* AJAX: Calculator de Materiale */
+
+ /*  AJAX: Calculator de Materiale */
+
 $(document).ready(function () {
     let conversionRate = 5; 
     let currentMoneyType = "RON";
@@ -1061,7 +1010,7 @@ $(document).ready(function () {
             return;
         }
 
-        // Animatie discount frontend (calculul se face in backend)
+        // Animatie discount frontend
         if (quantity > 50) {
             if (!$('#discount-message').is(':visible')) $('#discount-message').slideDown(200);
         } else {

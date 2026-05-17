@@ -1089,6 +1089,10 @@ th, td {
 
 /* Helpers */
 
+.worksite_selector {
+    margin-bottom: 10px;
+}
+
 .profile-card {
     max-width: 500px;
     margin: 40px auto;
@@ -1161,6 +1165,41 @@ th, td {
 .success-text {
     color: green;
     text-align: center;
+}
+
+.empty-gallery {
+    text-align: center;
+}
+
+.review-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.review-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.review-button {
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.review-message {
+    margin-top: 15px;
+    font-weight: bold;
 }
 
 .link-back {

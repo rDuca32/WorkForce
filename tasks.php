@@ -106,7 +106,7 @@ $tasks = $result->fetch_all(MYSQLI_ASSOC);
             <h3>Adaugă o sarcină nouă</h3>
             <form method="post" action="tasks.php">
                 
-                <select style="margin-bottom: 10px" name="worksite_id" required>
+                <select class="worksite_selector" name="worksite_id" required>
                     <option value="">-- Alege Șantierul --</option>
                     <?php foreach ($worksites as $w): ?>
                         <option value="<?php echo $w['id']; ?>"><?php echo htmlspecialchars($w['name']); ?></option>

@@ -96,15 +96,15 @@
 
         </section>
 
-        <section style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); max-width: 600px; margin: 20px 0;">
+        <section class="review-card">
             <h3>Lasă o recenzie a aplicației</h3>
             <form id="review-form">
-                <textarea name="feedback" id="feedback-text" cols="50" rows="5" placeholder="Scrie aici recenzia ta..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"></textarea>
+                <textarea name="feedback" id="feedback-text" cols="50" rows="5" placeholder="Scrie aici recenzia ta..." class="review-textarea"></textarea>
                 <br><br>
-                <button type="submit" style="background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Trimite</button>
+                <button type="submit" class="review-button">Trimite</button>
             </form>
             
-            <div id="review-message" style="margin-top: 15px; font-weight: bold;"></div>
+            <div id="review-message" class="review-message"></div>
         </section>
 
         <br>
