@@ -190,6 +190,22 @@ nav a:hover {
 
 /* Forms */
 
+.add-task-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05)
+}
+
+.edit-details {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    display: flex;
+    gap: 30px;
+}
+
 form, .auth {
     background: white;
     padding: 30px;
@@ -752,6 +768,49 @@ th, td {
     margin-top: 15px;
     display: flex;
     gap: 10px;
+}
+
+.add-task-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.add-task-form input, .add-task-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-finish {
+    background: #2ecc71;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-finish.disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
 }
 
 /* Lists */

@@ -76,9 +76,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Editare Profil - WorkForce</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkForce</title>
+    <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="description" content="Aplicație destinată managerilor de șantiere">
+    <script src="javascript/script.js" defer></script>
+    <script src="javascript/jquery-4.0.0.min.js"></script>
 </head>
 <body>
 
