@@ -35,9 +35,9 @@ if (!$user) {
             style="max-width: 500px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
 
             <?php
-            $pic = !empty($user['profile_pic']) ? $user['profile_pic'] : 'default-avatar.png';
+            $pic = !empty($user['profile_pic']) ? $user['profile_pic'] : 'default.png';
             // Verificam daca poza e in uploads sau e cea default
-            $path = (file_exists("uploads/" . $pic) && $pic != 'default.png') ? "uploads/" . $pic : "assets/default-avatar.png";
+            $path = (file_exists("uploads/" . $pic) && $pic != 'default.png') ? "uploads/" . $pic : "assets/default.png";
             ?>
 
             <img src="<?php echo $path; ?>"
@@ -53,7 +53,11 @@ if (!$user) {
                 <p><strong>Functie:</strong> <?php echo ucfirst(str_replace('_', ' ', $user['job_title'])); ?></p>
             </div>
 
-            <br><br>
+            <br>
+            <a href="edit_profile.php" style="display: block; background: #3498db; color: white; padding: 10px; text-decoration: none; border-radius: 5px; margin-bottom: 15px; font-weight: bold;">
+                <i class="fa-solid fa-user-pen"></i> Editează Profil
+            </a>
+            <br>
             <a href="index.php" style="text-decoration: none; color: black;">Inapoi acasă</a>
         </div>
     </main>
