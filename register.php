@@ -76,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form class="register_form" name="register_form" method="post" action="register.php" enctype="multipart/form-data" onsubmit="validateFormOnSubmit(event)">
             <h1>Înregistrare</h1>
 
-            <?php if(!empty($error)) echo "<p style='color:red; text-align:center;'>$error</p>"; ?>
-            <?php if(!empty($success)) echo "<p style='color:green; text-align:center;'>$success</p>"; ?>
+            <?php if(!empty($error)) echo "<p class='error-text'>$error</p>"; ?>
+            <?php if(!empty($success)) echo "<p class='success-text'>$success</p>"; ?>
 
             <label for="email">Email:</label>
             <div class="form-helper">

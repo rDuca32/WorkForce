@@ -36,8 +36,7 @@ if (!$user) {
     <?php include 'header.php'; ?>
 
     <main>
-        <div
-            style="max-width: 500px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
+        <div class="profile-card">
 
             <?php
             $pic = !empty($user['profile_pic']) ? $user['profile_pic'] : 'default.png';
@@ -45,25 +44,24 @@ if (!$user) {
             $path = (file_exists("uploads/" . $pic) && $pic != 'default.png') ? "uploads/" . $pic : "assets/default.png";
             ?>
 
-            <img src="<?php echo $path; ?>"
-                style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid black;">
+            <img src="<?php echo $path; ?>" class="profile-avatar">
 
-            <h2 style="margin-top: 15px;"><?php echo htmlspecialchars($user['username']); ?></h2>
-            <p style="color: #666;"><?php echo htmlspecialchars($user['email']); ?></p>
+            <h2 class="profile-username"><?php echo htmlspecialchars($user['username']); ?></h2>
+            <p class="muted"><?php echo htmlspecialchars($user['email']); ?></p>
 
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <hr class="hr-light">
 
-            <div style="text-align: left; display: inline-block;">
+            <div class="info-block">
                 <p><strong>Rol:</strong> <?php echo ucfirst($user['role']); ?></p>
                 <p><strong>Functie:</strong> <?php echo ucfirst(str_replace('_', ' ', $user['job_title'])); ?></p>
             </div>
 
             <br>
-            <a href="edit_profile.php" style="display: block; background: #3498db; color: white; padding: 10px; text-decoration: none; border-radius: 5px; margin-bottom: 15px; font-weight: bold;">
+            <a href="edit_profile.php" class="btn-primary">
                 <i class="fa-solid fa-user-pen"></i> Editează Profil
             </a>
             <br>
-            <a href="index.php" style="text-decoration: none; color: black;">Inapoi acasă</a>
+            <a href="index.php" class="link-back">Inapoi acasă</a>
         </div>
     </main>
 

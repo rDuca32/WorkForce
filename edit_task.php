@@ -139,50 +139,50 @@ $subtasks = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <body>
     <?php include 'header.php'; ?>
 
-    <main style="max-width: 800px; margin: 40px auto; padding: 20px; display: flex; gap: 30px; flex-wrap: wrap;">
+    <main class="edit-details">
         
-        <section style="flex: 1; min-width: 300px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <section>
             <h2>Editează Detaliile</h2>
             <form method="post" action="edit_task.php?id=<?php echo $task_id; ?>">
                 <label>Titlu Sarcină:</label>
-                <input type="text" name="title" value="<?php echo htmlspecialchars($task['title']); ?>" required style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                <input type="text" name="title" value="<?php echo htmlspecialchars($task['title']); ?>" required>
                 
                 <label>Descriere:</label>
-                <textarea name="description" rows="4" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><?php echo htmlspecialchars($task['description']); ?></textarea>
+                <textarea name="description" rows="4" required><?php echo htmlspecialchars($task['description']); ?></textarea>
                 
-                <button type="submit" name="update_task" style="background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%;">
+                <button type="submit" name="update_task" class="btn-full">
                     Salvează Modificările
                 </button>
             </form>
             <br>
-            <a href="progress.php" style="text-decoration: none; color: #666;"><i class="fa-solid fa-arrow-left"></i> Înapoi la progres</a>
+            <a href="progress.php" class="link-muted"><i class="fa-solid fa-arrow-left"></i> Înapoi la progres</a>
         </section>
 
-        <section style="flex: 1; min-width: 300px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <section>
             <h2>Sub-sarcini (Progres: <?php echo $task['progress']; ?>%)</h2>
             
-            <form method="post" action="edit_task.php?id=<?php echo $task_id; ?>" style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" name="subtask_title" placeholder="Adaugă sub-sarcină nouă..." required style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                <button type="submit" name="add_subtask" style="background: #2ecc71; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer;">Adaugă</button>
+            <form method="post" action="edit_task.php?id=<?php echo $task_id; ?>" class="subtask-form">
+                <input type="text" name="subtask_title" placeholder="Adaugă sub-sarcină nouă..." required class="flex-1">
+                <button type="submit" name="add_subtask" class="btn-finish">Adaugă</button>
             </form>
 
-            <ul style="list-style: none; padding: 0;">
+            <ul class="no-list">
                 <?php if (empty($subtasks)): ?>
-                    <p style="color: #999;">Nu există nicio sub-sarcină.</p>
+                    <p class="empty-msg">Nu există nicio sub-sarcină.</p>
                 <?php else: ?>
                     <?php foreach($subtasks as $sub): ?>
-                        <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
+                        <li class="subtask-item">
                             
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <a href="edit_task.php?id=<?php echo $task_id; ?>&toggle_sub=<?php echo $sub['id']; ?>" style="color: <?php echo $sub['is_completed'] ? '#2ecc71' : '#ccc'; ?>; font-size: 1.2rem;">
+                            <div class="subtask-left">
+                                <a href="edit_task.php?id=<?php echo $task_id; ?>&toggle_sub=<?php echo $sub['id']; ?>" class="sub-toggle" style="--sub-color: <?php echo $sub['is_completed'] ? '#2ecc71' : '#ccc'; ?>;">
                                     <i class="<?php echo $sub['is_completed'] ? 'fa-solid fa-square-check' : 'fa-regular fa-square'; ?>"></i>
                                 </a>
-                                <span style="text-decoration: <?php echo $sub['is_completed'] ? 'line-through' : 'none'; ?>; color: <?php echo $sub['is_completed'] ? '#999' : '#333'; ?>;">
+                                <span class="sub-title" style="--sub-decoration: <?php echo $sub['is_completed'] ? 'line-through' : 'none'; ?>; --sub-title-color: <?php echo $sub['is_completed'] ? '#999' : '#333'; ?>;">
                                     <?php echo htmlspecialchars($sub['title']); ?>
                                 </span>
                             </div>
 
-                            <a href="edit_task.php?id=<?php echo $task_id; ?>&delete_sub=<?php echo $sub['id']; ?>" style="color: #e74c3c; text-decoration: none;">
+                            <a href="edit_task.php?id=<?php echo $task_id; ?>&delete_sub=<?php echo $sub['id']; ?>" class="delete-link">
                                 <i class="fa-solid fa-xmark"></i>
                             </a>
                         </li>

@@ -66,14 +66,23 @@ if (isset($_GET['finish_id']) && $can_edit) {
 }
 
 
-// 2. Extragem datele in functie de rol
+// 2. Extragem datele in functie de rol (ADĂUGĂM LEFT JOIN WORKSITES)
 $tasks = [];
 if ($role === 'admin' || $role === 'patron') {
-    $sql = "SELECT t.*, u.username, u.team FROM tasks t JOIN users u ON t.user_id = u.id ORDER BY t.id DESC";
+    $sql = "SELECT t.*, u.username, u.team, w.name as worksite_name 
+            FROM tasks t 
+            JOIN users u ON t.user_id = u.id 
+            LEFT JOIN worksites w ON t.worksite_id = w.id 
+            ORDER BY t.id DESC";
     $result = $conn->query($sql);
     if ($result) $tasks = $result->fetch_all(MYSQLI_ASSOC);
 } else {
-    $sql = "SELECT t.*, u.username, u.team FROM tasks t JOIN users u ON t.user_id = u.id WHERE u.team = ? ORDER BY t.id DESC";
+    $sql = "SELECT t.*, u.username, u.team, w.name as worksite_name 
+            FROM tasks t 
+            JOIN users u ON t.user_id = u.id 
+            LEFT JOIN worksites w ON t.worksite_id = w.id 
+            WHERE u.team = ? 
+            ORDER BY t.id DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $user_team);
     $stmt->execute();
@@ -127,27 +136,33 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
 
         <div class="task-grid">
             <?php if (empty($tasks)): ?>
-                <p style="text-align: center; width: 100%;">Nu exista sarcini de afisat pentru aceasta selectie.</p>
+                <p class="empty-msg">Nu exista sarcini de afisat pentru aceasta selectie.</p>
             <?php else: ?>
                 <?php foreach ($tasks as $task): ?>
                     <article class="card <?php echo ($task['status'] === 'Neîncepută') ? 'priority-high' : ''; ?>">
                         
                         <?php 
-                        // Setam si culoarea tag-ului in functie de status
-                        $tagColor = '#3498db'; // Albastru implicit pt "În lucru"
-                        if ($task['status'] == 'Neîncepută') $tagColor = '#e74c3c'; // Rosu
-                        if ($task['status'] == 'Finalizată') $tagColor = '#2ecc71'; // Verde
+                        $tagColor = '#3498db'; 
+                        if ($task['status'] == 'Neîncepută') $tagColor = '#e74c3c'; 
+                        if ($task['status'] == 'Finalizată') $tagColor = '#2ecc71'; 
                         ?>
                         
-                        <div class="card-tag" style="background-color: <?php echo $tagColor; ?>; color: white; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 12px; margin-bottom: 10px;">
+                        <div class="card-tag" style="--tag-color: <?php echo $tagColor; ?>;">
                             <?php echo htmlspecialchars($task['status']); ?>
                         </div>
 
                         <h2><?php echo htmlspecialchars($task['title']); ?></h2>
+                        
+                        <?php if(!empty($task['worksite_name'])): ?>
+                            <p class="worksite-meta">
+                                <i class="fa-solid fa-location-dot"></i> Șantier: <strong><?php echo htmlspecialchars($task['worksite_name']); ?></strong>
+                            </p>
+                        <?php endif; ?>
+
                         <p><?php echo htmlspecialchars($task['description']); ?></p>
                         
                         <div class="progress-wrapper">
-                            <div class="progress-bar" style="width: <?php echo $task['progress']; ?>%; background: <?php echo $task['progress'] == 100 ? '#2ecc71' : '#3498db'; ?>;"></div>
+                            <div class="progress-bar" style="--progress: <?php echo $task['progress']; ?>%; --progress-color: <?php echo $task['progress'] == 100 ? '#2ecc71' : '#3498db'; ?>;"></div>
                         </div>
                         
                         <div class="card-meta">
@@ -156,19 +171,19 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
                         </div>
                         
                         <?php if ($can_edit): ?>
-                        <div class="card-actions" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div class="card-actions">
                             
                             <?php if ($task['progress'] < 100): ?>
-                                <a href="progress.php?finish_id=<?php echo $task['id']; ?>" class="btn-finish" style="background: #2ecc71; color: #fff; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 13px;">
+                                <a href="progress.php?finish_id=<?php echo $task['id']; ?>" class="btn-finish">
                                     <i class="fa-solid fa-check-double"></i> Finalizeaza
                                 </a>
                             <?php endif; ?>
 
-                            <a href="edit_task.php?id=<?php echo $task['id']; ?>" class="btn-edit" style="background: #f1c40f; color: #fff; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 13px;">
+                            <a href="edit_task.php?id=<?php echo $task['id']; ?>" class="btn-edit">
                                 <i class="fa-solid fa-pen-to-square"></i> Editeaza
                             </a>
                             
-                            <a href="progress.php?delete_id=<?php echo $task['id']; ?>" class="btn-delete" onclick="return confirm('Stergi sarcina?');" style="background: #e74c3c; color: #fff; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 13px;">
+                            <a href="progress.php?delete_id=<?php echo $task['id']; ?>" class="btn-delete" onclick="return confirm('Stergi sarcina?');">
                                 <i class="fa-solid fa-trash"></i> Sterge
                             </a>
                         </div>
@@ -179,40 +194,40 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
             <?php endif; ?>
         </div>
 
-        <section style="margin-top: 40px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-            <h2 style="text-align: center;">Calculator materiale</h2>
-            <div id="calculator-wrapper" style="max-width: 500px; margin: 0 auto;">
-                <div style="margin-bottom: 15px;">
-                    <label for="calc-material" style="display: block; margin-bottom: 5px;"><strong>Tip material</strong></label>
-                    <select id="calc-material" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;"></select>
+        <section class="panel-card">
+            <h2>Calculator materiale</h2>
+            <div id="calculator-wrapper">
+                <div>
+                    <label for="calc-material"><strong>Tip material</strong></label>
+                    <select id="calc-material"></select>
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label for="calc-quantity" style="display: block; margin-bottom: 5px;">Cantitatea necesară</label>
-                    <input id="calc-quantity" type="number" min="1" value="1" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                    <small id="discount-message" style="color: #27ae60; display: block; margin-top: 5px;">
+                <div>
+                    <label for="calc-quantity">Cantitatea necesară</label>
+                    <input id="calc-quantity" type="number" min="1" value="1">
+                    <small id="discount-message">
                         <i class="fa-solid fa-tag"></i> Ai primit o reducere de 10%
                     </small>
                 </div>
-                <div style="margin-bottom: 15px;">
+                <div>
                     <label>
                         <input id="calc-urgent" type="checkbox">
                         <strong>Livrare urgentă</strong> (+100 RON taxă)
                     </label>
                 </div>
-                <div style="margin-top: 15px; text-align: center;">
-                    <button id="btn-currency" data-currency="RON" style="background: #34495e; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer;">
+                <div class="centered">
+                    <button id="btn-currency" data-currency="RON">
                         <i class="fa-solid fa-money-bill-transfer"></i> Schimbă în EURO
                     </button>
                 </div>
-                <div style="font-size: 18px; margin-top: 20px; text-align: center; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                <div class="calc-summary">
                     Cost total estimat: <br>
-                    <span id="calc-total" style="font-size: 24px; font-weight: bold; color: #2c3e50;">0</span>
-                    <strong style="color: #2c3e50;">RON</strong>
+                    <span id="calc-total">0</span>
+                    <strong>RON</strong>
                 </div>
-                <div id="shipping-progress-container" style="margin-top: 15px; background: #eee; height: 10px; border-radius: 5px;">
-                    <div id="shipping-bar" style="height: 100%; background: #2ecc71; border-radius: 5px; width: 0%;"></div>
+                <div id="shipping-progress-container">
+                    <div id="shipping-bar"></div>
                 </div>
-                <p id="shipping-info" style="font-size: 14px; margin-top: 5px; text-align: center; color: #7f8c8d;">Mai adaugă pentru livrare gratuită</p>
+                <p id="shipping-info">Mai adaugă pentru livrare gratuită</p>
             </div>
         </section>
         

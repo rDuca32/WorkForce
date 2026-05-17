@@ -90,33 +90,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'header.php'; ?>
 
     <main>
-        <div style="max-width: 500px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <h2 style="text-align: center; margin-bottom: 20px;">Editare Profil</h2>
+        <div class="profile-card">
+            <h2>Editare Profil</h2>
 
-            <?php if(!empty($error)) echo "<p style='color:red; text-align:center;'>$error</p>"; ?>
-            <?php if(!empty($success)) echo "<p style='color:green; text-align:center;'>$success</p>"; ?>
+            <?php if(!empty($error)) echo "<p class='error-text'>$error</p>"; ?>
+            <?php if(!empty($success)) echo "<p class='success-text'>$success</p>"; ?>
 
             <form method="post" action="edit_profile.php" enctype="multipart/form-data">
                 
                 <label for="username">Nume de utilizator:</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required>
 
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
 
                 <label for="photo">Poză de profil nouă:</label>
-                <input type="file" id="photo" name="photo" style="margin-bottom: 20px;">
+                <input type="file" id="photo" name="photo">
                 <br>
                 <small>Poza curentă: <?php echo htmlspecialchars($user['profile_pic']); ?></small>
 
                 <br><br>
-                <button type="submit" style="width: 100%; background: #3498db; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+                <button type="submit" class="btn-full">
                     Salvează modificările
                 </button>
             </form>
 
-            <div style="text-align: center; margin-top: 15px;">
-                <a href="profile.php" style="text-decoration: none; color: #666;">Renunță</a>
+            <div class="centered">
+                <a href="profile.php" class="link-muted">Renunță</a>
             </div>
         </div>
     </main>

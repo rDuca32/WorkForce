@@ -4,23 +4,30 @@ include 'db.php';
 
 $user_id = $_SESSION['user_id'];
 
-// 1. CREATE - Adaugare task nou 
+// --- 1. Aducem lista de șantiere pentru dropdown-ul din formular ---
+$worksites_sql = "SELECT id, name FROM worksites ORDER BY name ASC";
+$worksites_result = $conn->query($worksites_sql);
+$worksites = $worksites_result ? $worksites_result->fetch_all(MYSQLI_ASSOC) : [];
+
+// 2. CREATE - Adaugare task nou 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_task'])) {
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
+    $worksite_id = !empty($_POST['worksite_id']) ? intval($_POST['worksite_id']) : NULL;
     $status = 'Neîncepută';
     $progress = 0;
     
-    $sql_insert = "INSERT INTO tasks (user_id, title, description, status, progress) VALUES (?, ?, ?, ?, ?)";
+    // Adaugam si worksite_id in insert
+    $sql_insert = "INSERT INTO tasks (user_id, worksite_id, title, description, status, progress) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql_insert);
-    $stmt->bind_param("isssi", $user_id, $title, $description, $status, $progress);
+    $stmt->bind_param("iisssi", $user_id, $worksite_id, $title, $description, $status, $progress);
     $stmt->execute();
     
     header("Location: tasks.php");
     exit();
 }
 
-// 2. DELETE - Stergerea unui task
+// 3. DELETE - Stergerea unui task
 if (isset($_GET['delete_id'])) {
     $del_id = intval($_GET['delete_id']);
     $sql_delete = "DELETE FROM tasks WHERE id = ? AND user_id = ?";
@@ -32,24 +39,21 @@ if (isset($_GET['delete_id'])) {
     exit();
 }
 
-// 3. UPDATE RAPID - Finalizarea unui task SI a subtaskurilor
+// 4. UPDATE RAPID - Finalizarea unui task SI a subtaskurilor
 if (isset($_GET['finish_id'])) {
     $finish_id = intval($_GET['finish_id']);
     
-    // Verificam mai intai ca taskul ii apartine utilizatorului
     $check_sql = "SELECT id FROM tasks WHERE id = ? AND user_id = ?";
     $check_stmt = $conn->prepare($check_sql);
     $check_stmt->bind_param("ii", $finish_id, $user_id);
     $check_stmt->execute();
     
     if ($check_stmt->get_result()->num_rows > 0) {
-        // Actualizam task-ul principal la 100%
         $sql_update_task = "UPDATE tasks SET progress = 100, status = 'Finalizată' WHERE id = ?";
         $stmt_task = $conn->prepare($sql_update_task);
         $stmt_task->bind_param("i", $finish_id);
         $stmt_task->execute();
         
-        // Bifam automat toate subtask-urile ca fiind completate
         $sql_update_subs = "UPDATE subtasks SET is_completed = 1 WHERE task_id = ?";
         $stmt_subs = $conn->prepare($sql_update_subs);
         $stmt_subs->bind_param("i", $finish_id);
@@ -60,8 +64,15 @@ if (isset($_GET['finish_id'])) {
     exit();
 }
 
-// 4. READ - Extragem task-urile userului curent
-$sql_select = "SELECT id, title, description, status, progress FROM tasks WHERE user_id = ? ORDER BY id DESC";
+// 5. READ - Extragem task-urile userului curent + NUMELE ȘANTIERULUI
+// Folosim LEFT JOIN pentru a aduce w.name (numele santierului din tabelul worksites)
+$sql_select = "
+    SELECT t.id, t.title, t.description, t.status, t.progress, w.name as worksite_name 
+    FROM tasks t 
+    LEFT JOIN worksites w ON t.worksite_id = w.id 
+    WHERE t.user_id = ? 
+    ORDER BY t.id DESC
+";
 $stmt = $conn->prepare($sql_select);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -94,9 +105,17 @@ $tasks = $result->fetch_all(MYSQLI_ASSOC);
         <section class="add-task-form">
             <h3>Adaugă o sarcină nouă</h3>
             <form method="post" action="tasks.php">
-                <input type="text" name="title" placeholder="Titlul sarcinii" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
-                <textarea name="description" rows="2" placeholder="Descriere scurtă..." required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
-                <button type="submit" name="add_task" style="background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                
+                <select name="worksite_id" required>
+                    <option value="">-- Alege Șantierul --</option>
+                    <?php foreach ($worksites as $w): ?>
+                        <option value="<?php echo $w['id']; ?>"><?php echo htmlspecialchars($w['name']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="text" name="title" placeholder="Titlul sarcinii" required>
+                <textarea name="description" rows="2" placeholder="Descriere scurtă..." required></textarea>
+                
+                <button type="submit" name="add_task" class="btn-primary">
                     <i class="fa-solid fa-plus"></i> Adaugă Sarcină
                 </button>
             </form>
@@ -107,43 +126,49 @@ $tasks = $result->fetch_all(MYSQLI_ASSOC);
                 <p>Nu ai nicio sarcină alocată momentan.</p>
             <?php else: ?>
                 <?php foreach ($tasks as $task): ?>
-                    <article class="card">
+                    <article class="card <?php echo ($task['status'] === 'Neîncepută') ? 'priority-high' : ''; ?>">
                         
                         <?php 
-                        // Setam culoarea tag-ului in functie de status
-                        $tagColor = '#3498db'; // Albastru implicit pt "În lucru"
-                        if ($task['status'] == 'Neîncepută') $tagColor = '#e74c3c'; // Rosu
-                        if ($task['status'] == 'Finalizată') $tagColor = '#2ecc71'; // Verde
+                        $tagColor = '#3498db'; 
+                        if ($task['status'] == 'Neîncepută') $tagColor = '#e74c3c'; 
+                        if ($task['status'] == 'Finalizată') $tagColor = '#2ecc71'; 
                         ?>
                         
-                        <div class="card-tag" style="background-color: <?php echo $tagColor; ?>; color: white; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 12px; margin-bottom: 10px;">
+                        <div class="card-tag" style="--tag-color: <?php echo $tagColor; ?>;">
                             <?php echo htmlspecialchars($task['status']); ?>
                         </div>
                         
                         <h2><?php echo htmlspecialchars($task['title']); ?></h2>
+                        
+                        <?php if(!empty($task['worksite_name'])): ?>
+                            <p class="worksite-meta">
+                                <i class="fa-solid fa-location-dot"></i> Șantier: <strong><?php echo htmlspecialchars($task['worksite_name']); ?></strong>
+                            </p>
+                        <?php endif; ?>
+
                         <p><?php echo htmlspecialchars($task['description']); ?></p>
                         
                         <div class="progress-wrapper">
-                            <div class="progress-bar" style="width: <?php echo $task['progress']; ?>%; background: <?php echo $task['progress'] == 100 ? '#2ecc71' : '#3498db'; ?>;"></div>
+                            <div class="progress-bar" style="--progress: <?php echo $task['progress']; ?>%; --progress-color: <?php echo $task['progress'] == 100 ? '#2ecc71' : '#3498db'; ?>;"></div>
                         </div>
                         
                         <div class="card-meta">
                             <span>Progres: <strong><?php echo $task['progress']; ?>%</strong></span>
                         </div>
                         
-                        <div class="card-actions" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div class="card-actions">
                             
                             <?php if ($task['progress'] < 100): ?>
-                                <a href="tasks.php?finish_id=<?php echo $task['id']; ?>" class="btn-finish" style="background: #2ecc71; color: #fff; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+                                <a href="tasks.php?finish_id=<?php echo $task['id']; ?>" class="btn-finish">
                                     <i class="fa-solid fa-check-double"></i> Finalizează
                                 </a>
                             <?php endif; ?>
 
-                            <a href="edit_task.php?id=<?php echo $task['id']; ?>" class="btn-edit" style="background: #f1c40f; color: #fff; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+                            <a href="edit_task.php?id=<?php echo $task['id']; ?>" class="btn-edit">
                                 <i class="fa-solid fa-pen-to-square"></i> Editează
                             </a>
                             
-                            <a href="tasks.php?delete_id=<?php echo $task['id']; ?>" class="btn-delete" onclick="return confirm('Ești sigur că vrei să ștergi această sarcină?');" style="background: #e74c3c; color: #fff; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+                            <a href="tasks.php?delete_id=<?php echo $task['id']; ?>" class="btn-delete" onclick="return confirm('Ești sigur că vrei să ștergi această sarcină?');">
                                 <i class="fa-solid fa-trash"></i> Șterge
                             </a>
                         </div>

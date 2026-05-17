@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form class="login_form" name="login_form" method="post" action="login.php" onsubmit="validateFormOnSubmit(event)">
             <h1>Conectare</h1>
             
-            <?php if(!empty($error)) echo "<p style='color:red; text-align:center;'>$error</p>"; ?>
+            <?php if(!empty($error)) echo "<p class='error-text'>$error</p>"; ?>
 
             <label for="username">Nume de utilizator:</label>
             <div class="form-helper">
