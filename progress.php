@@ -1,5 +1,5 @@
-<?php 
-include 'check_auth.php'; 
+<?php
+include 'check_auth.php';
 include 'db.php';
 
 $user_id = $_SESSION['user_id'];
@@ -20,7 +20,7 @@ $can_edit = ($role === 'admin' || $role === 'patron' || $job === 'manager_santie
 // === HANDLERE PENTRU ACTIUNI (Stergere / Finalizare) ===
 if (isset($_GET['delete_id']) && $can_edit) {
     $del_id = intval($_GET['delete_id']);
-    
+
     if ($role === 'admin' || $role === 'patron') {
         $sql_delete = "DELETE FROM tasks WHERE id = ?";
         $stmt = $conn->prepare($sql_delete);
@@ -39,7 +39,7 @@ if (isset($_GET['delete_id']) && $can_edit) {
 if (isset($_GET['finish_id']) && $can_edit) {
     $finish_id = intval($_GET['finish_id']);
     $allowed = false;
-    
+
     if ($role === 'admin' || $role === 'patron') {
         $allowed = true;
     } else {
@@ -47,7 +47,8 @@ if (isset($_GET['finish_id']) && $can_edit) {
         $stmt = $conn->prepare($check);
         $stmt->bind_param("is", $finish_id, $user_team);
         $stmt->execute();
-        if ($stmt->get_result()->num_rows > 0) $allowed = true;
+        if ($stmt->get_result()->num_rows > 0)
+            $allowed = true;
     }
 
     if ($allowed) {
@@ -55,7 +56,7 @@ if (isset($_GET['finish_id']) && $can_edit) {
         $stmt_task = $conn->prepare($sql_update_task);
         $stmt_task->bind_param("i", $finish_id);
         $stmt_task->execute();
-        
+
         $sql_update_subs = "UPDATE subtasks SET is_completed = 1 WHERE task_id = ?";
         $stmt_subs = $conn->prepare($sql_update_subs);
         $stmt_subs->bind_param("i", $finish_id);
@@ -75,7 +76,8 @@ if ($role === 'admin' || $role === 'patron') {
             LEFT JOIN worksites w ON t.worksite_id = w.id 
             ORDER BY t.id DESC";
     $result = $conn->query($sql);
-    if ($result) $tasks = $result->fetch_all(MYSQLI_ASSOC);
+    if ($result)
+        $tasks = $result->fetch_all(MYSQLI_ASSOC);
 } else {
     $sql = "SELECT t.*, u.username, u.team, w.name as worksite_name 
             FROM tasks t 
@@ -87,7 +89,8 @@ if ($role === 'admin' || $role === 'patron') {
     $stmt->bind_param("s", $user_team);
     $stmt->execute();
     $result = $stmt->get_result();
-    if ($result) $tasks = $result->fetch_all(MYSQLI_ASSOC);
+    if ($result)
+        $tasks = $result->fetch_all(MYSQLI_ASSOC);
 }
 
 // 3. Calculam statisticile dinamice
@@ -97,11 +100,19 @@ $total_progress = 0;
 $delays = 0;
 
 foreach ($tasks as $t) {
-    if ($t['progress'] < 100) $active_tasks++;
+    if ($t['progress'] < 100)
+        $active_tasks++;
     $total_progress += $t['progress'];
-    if ($t['progress'] == 0) $delays++;
+    if ($t['progress'] == 0)
+        $delays++;
 }
 $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
+
+// Extragem materialele pentru calculator
+$sql_materials = "SELECT id, name, price_per_unit FROM materials";
+$result_materials = $conn->query($sql_materials);
+$materials = $result_materials ? $result_materials->fetch_all(MYSQLI_ASSOC) : [];
+
 ?>
 
 <!DOCTYPE html>
@@ -125,9 +136,11 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
     <main>
         <section class="page-title">
             <h1>Panou de control - Progres Global</h1>
-            <p>Monitorizare in timp real pentru: <strong><?php echo ($role === 'admin' || $role === 'patron') ? 'Toate echipele' : 'Echipa ' . htmlspecialchars($user_team); ?></strong></p>
+            <p>Monitorizare in timp real pentru:
+                <strong><?php echo ($role === 'admin' || $role === 'patron') ? 'Toate echipele' : 'Echipa ' . htmlspecialchars($user_team); ?></strong>
+            </p>
         </section>
-        
+
         <section class="stats-overview">
             <div class="stat-item"><b><?php echo $active_tasks; ?></b> Sarcini Active</div>
             <div class="stat-item"><b><?php echo $avg_progress; ?>%</b> Progres Total</div>
@@ -140,55 +153,61 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
             <?php else: ?>
                 <?php foreach ($tasks as $task): ?>
                     <article class="card <?php echo ($task['status'] === 'Neîncepută') ? 'priority-high' : ''; ?>">
-                        
-                        <?php 
-                        $tagColor = '#3498db'; 
-                        if ($task['status'] == 'Neîncepută') $tagColor = '#e74c3c'; 
-                        if ($task['status'] == 'Finalizată') $tagColor = '#2ecc71'; 
+
+                        <?php
+                        $tagColor = '#3498db';
+                        if ($task['status'] == 'Neîncepută')
+                            $tagColor = '#e74c3c';
+                        if ($task['status'] == 'Finalizată')
+                            $tagColor = '#2ecc71';
                         ?>
-                        
+
                         <div class="card-tag" style="--tag-color: <?php echo $tagColor; ?>;">
                             <?php echo htmlspecialchars($task['status']); ?>
                         </div>
 
                         <h2><?php echo htmlspecialchars($task['title']); ?></h2>
-                        
-                        <?php if(!empty($task['worksite_name'])): ?>
+
+                        <?php if (!empty($task['worksite_name'])): ?>
                             <p class="worksite-meta">
-                                <i class="fa-solid fa-location-dot"></i> Șantier: <strong><?php echo htmlspecialchars($task['worksite_name']); ?></strong>
+                                <i class="fa-solid fa-location-dot"></i> Șantier:
+                                <strong><?php echo htmlspecialchars($task['worksite_name']); ?></strong>
                             </p>
                         <?php endif; ?>
 
                         <p><?php echo htmlspecialchars($task['description']); ?></p>
-                        
+
                         <div class="progress-wrapper">
-                            <div class="progress-bar" style="--progress: <?php echo $task['progress']; ?>%; --progress-color: <?php echo $task['progress'] == 100 ? '#2ecc71' : '#3498db'; ?>;"></div>
+                            <div class="progress-bar"
+                                style="--progress: <?php echo $task['progress']; ?>%; --progress-color: <?php echo $task['progress'] == 100 ? '#2ecc71' : '#3498db'; ?>;">
+                            </div>
                         </div>
-                        
+
                         <div class="card-meta">
                             <span>Progres: <strong><?php echo $task['progress']; ?>%</strong></span>
                             <strong><?php echo htmlspecialchars($task['team'] . ' (' . $task['username'] . ')'); ?></strong>
                         </div>
-                        
-                        <?php if ($can_edit): ?>
-                        <div class="card-actions">
-                            
-                            <?php if ($task['progress'] < 100): ?>
-                                <a href="progress.php?finish_id=<?php echo $task['id']; ?>" class="btn-finish">
-                                    <i class="fa-solid fa-check-double"></i> Finalizeaza
-                                </a>
-                            <?php endif; ?>
 
-                            <a href="edit_task.php?id=<?php echo $task['id']; ?>" class="btn-edit">
-                                <i class="fa-solid fa-pen-to-square"></i> Editeaza
-                            </a>
-                            
-                            <a href="progress.php?delete_id=<?php echo $task['id']; ?>" class="btn-delete" onclick="return confirm('Stergi sarcina?');">
-                                <i class="fa-solid fa-trash"></i> Sterge
-                            </a>
-                        </div>
+                        <?php if ($can_edit): ?>
+                            <div class="card-actions">
+
+                                <?php if ($task['progress'] < 100): ?>
+                                    <a href="progress.php?finish_id=<?php echo $task['id']; ?>" class="btn-finish">
+                                        <i class="fa-solid fa-check-double"></i> Finalizeaza
+                                    </a>
+                                <?php endif; ?>
+
+                                <a href="edit_task.php?id=<?php echo $task['id']; ?>" class="btn-edit">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editeaza
+                                </a>
+
+                                <a href="progress.php?delete_id=<?php echo $task['id']; ?>" class="btn-delete"
+                                    onclick="return confirm('Stergi sarcina?');">
+                                    <i class="fa-solid fa-trash"></i> Sterge
+                                </a>
+                            </div>
                         <?php endif; ?>
-                        
+
                     </article>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -199,7 +218,16 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
             <div id="calculator-wrapper">
                 <div>
                     <label for="calc-material"><strong>Tip material</strong></label>
-                    <select id="calc-material"></select>
+                    <select id="calc-material"
+                        style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="">-- Alege materialul --</option>
+                        <?php foreach ($materials as $mat): ?>
+                            <option value="<?php echo $mat['id']; ?>">
+                                <?php echo htmlspecialchars($mat['name']); ?> (
+                                <?php echo $mat['price_per_unit']; ?> RON)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div>
                     <label for="calc-quantity">Cantitatea necesară</label>
@@ -230,10 +258,11 @@ $avg_progress = ($total_tasks > 0) ? round($total_progress / $total_tasks) : 0;
                 <p id="shipping-info">Mai adaugă pentru livrare gratuită</p>
             </div>
         </section>
-        
+
     </main>
 
     <?php include 'footer.php'; ?>
 
 </body>
+
 </html>

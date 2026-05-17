@@ -722,7 +722,7 @@ $(document).ready(function () {
     })
 })
 
-/* Calculator */
+/* Calculator 
 
 $(document).ready(function () {
     let conversionRate = 5; // backup
@@ -872,7 +872,9 @@ $(document).ready(function () {
     $('#btn-currency').on('click', changeMoneyType);
 })
 
-/* Functionalitate editare si finalizare task */
+*/
+
+/* Functionalitate editare si finalizare task 
 
 $(document).ready(function () {
     // selectam butoanele cu acele clase
@@ -947,3 +949,181 @@ $(document).ready(function () {
     $editButton.on('click', editTask);
     $finishButton.on('click', finishTask);
 })
+
+*/
+
+/* AJAX */
+
+/* Functionalitate editare si finalizare task */
+$(document).ready(function () {
+    let $editButton = $('.editTask');
+    let $finishButton = $('.finishTask');
+
+    function editTask() {
+        const $card = $(this).closest('.card');
+        const $button = $(this);
+        const $title = $card.find('h2');
+        const $description = $card.find('p').not('.worksite-meta'); // protejam textul cu santierul
+        const $status = $card.find('.card-tag');
+        const editing = $button.data('editing');
+
+        if (!editing) {
+            $title.attr('contenteditable', 'true');
+            $description.attr('contenteditable', 'true');
+            const currentStatus = $status.text().trim();
+            const $select = $('<select>').html(`
+                <option>Urgent</option>
+                <option>Normal</option>
+                <option>Lejer</option>
+                <option>Optional</option>
+            `).val(currentStatus);
+
+            $status.html('').append($select);
+            $button.text('Salvează').data('editing', true)
+        } else {
+            $title.removeAttr('contenteditable');
+            $description.removeAttr('contenteditable');
+            $status.removeAttr('contenteditable');
+            const selectedStatus = $status.find('select').val();
+            $status.text(selectedStatus);
+
+            if (selectedStatus.toLowerCase().includes('urgent')) {
+                $card.addClass('priority-high');
+            } else {
+                $card.removeClass('priority-high');
+            }
+            $button.text('Editează').data('editing', false)
+        }
+    }
+
+    function finishTask() {
+        const $card = $(this).closest('.card');
+        $card.find('.progress-bar').css('width', '100%');
+        $card.find('.card-tag').html('Finalizat');
+        $card.removeClass('priority-high');
+        $card.find('.editTask').hide();
+    }
+
+    $editButton.on('click', editTask);
+    $finishButton.on('click', finishTask);
+})
+
+/* AJAX: Trimitere Recenzie */
+$(document).ready(function() {
+    $('#review-form').on('submit', function(e) {
+        e.preventDefault(); 
+        let feedback = $('#feedback-text').val();
+        
+        $.ajax({
+            url: 'save_review.php',
+            type: 'POST',
+            data: { feedback: feedback },
+            success: function(response) {
+                $('#review-message').html(response); 
+                $('#feedback-text').val(''); 
+            },
+            error: function() {
+                $('#review-message').html("<span style='color: red;'>Eroare de conexiune la server.</span>");
+            }
+        });
+    });
+});
+
+/* AJAX: Calculator de Materiale */
+$(document).ready(function () {
+    let conversionRate = 5; 
+    let currentMoneyType = "RON";
+
+    // API conversie valuta
+    $.getJSON('https://open.er-api.com/v6/latest/EUR', function (data) {
+        if (data && data.rates && data.rates.RON) {
+            conversionRate = data.rates.RON;
+            getTotal();
+        }
+    });
+
+    function getTotal() {
+        let materialId = $('#calc-material').val(); // Acum ia ID-ul din PHP
+        let quantity = parseInt($('#calc-quantity').val()) || 0;
+        let isUrgent = $('#calc-urgent').is(':checked');
+
+        const baseThreshold = 5000;
+        let freeShippingThreshold = currentMoneyType === "EUR" ? baseThreshold / conversionRate : baseThreshold;
+
+        $('#calc-total').next('strong').text(currentMoneyType);
+
+        // Reset daca nu avem date
+        if (!materialId || quantity == 0) {
+            $('#calc-total').text("0.00");
+            $('#discount-message').slideUp(200);
+            $('#shipping-bar').css('width', '0%');
+            $('#shipping-info').text(`Mai adaugă ${freeShippingThreshold.toLocaleString('ro-RO', { maximumFractionDigits: 2 })} ${currentMoneyType} pentru livrare gratuită.`);
+            return;
+        }
+
+        // Animatie discount frontend (calculul se face in backend)
+        if (quantity > 50) {
+            if (!$('#discount-message').is(':visible')) $('#discount-message').slideDown(200);
+        } else {
+            $('#discount-message').slideUp(200);
+        }
+
+        // APELUL AJAX CATRE BACKEND-UL PHP
+        $.ajax({
+            url: 'calculate.php',
+            type: 'POST',
+            data: {
+                material_id: materialId,
+                quantity: quantity,
+                urgent: isUrgent
+            },
+            success: function(response) {
+                // response este totalul (ex: 245.50) in RON calculat de PHP
+                let totalRon = parseFloat(response);
+                let showTotal = currentMoneyType === "EUR" ? totalRon / conversionRate : totalRon;
+
+                // Animatie schimbare pret
+                $('#calc-total').stop(true, true).fadeOut(100, function () {
+                    $(this).text(showTotal.toLocaleString('ro-RO', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })).fadeIn(100);
+                    $(this).next('strong').text(currentMoneyType);
+                });
+
+                // Update bara de livrare gratuita
+                let percentage = (showTotal / freeShippingThreshold) * 100;
+                if (percentage > 100) percentage = 100;
+
+                $('#shipping-bar').css('width', percentage + '%');
+
+                if (showTotal >= freeShippingThreshold) {
+                    $('#shipping-info').html('<span style="color: green; font-weight: bold;"> Livrare gratuită</span>');
+                    $('#shipping-bar').css('background', 'forestgreen');
+                } else {
+                    let remaining = freeShippingThreshold - showTotal;
+                    $('#shipping-info').text(`Mai adaugă ${remaining.toLocaleString('ro-RO', { maximumFractionDigits: 2 })} ${currentMoneyType} pentru livrare gratuită`);
+                    $('#shipping-bar').css('background', 'var(--primary-color)');
+                }
+            },
+            error: function() {
+                $('#calc-total').text('Eroare conexiune');
+            }
+        });
+    }
+
+    // Declansatoare (Triggers)
+    $('#calc-material, #calc-quantity, #calc-urgent').on('input change', getTotal);
+
+    // Buton de conversie RON / EUR
+    $('#btn-currency').on('click', function () {
+        if (currentMoneyType === "RON") {
+            currentMoneyType = "EUR";
+            $(this).html('<i class="fa-solid fa-money-bill-transfer"></i> Schimbă în RON');
+        } else {
+            currentMoneyType = "RON";
+            $(this).html('<i class="fa-solid fa-money-bill-transfer"></i> Schimbă în EURO');
+        }
+        getTotal(); // Reface calculul (si apelul AJAX) cu noua valuta
+    });
+});

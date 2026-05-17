@@ -1,12 +1,23 @@
-<?php include 'check_auth.php'; ?>
-<!DOCTYPE html>
+<?php 
+include 'check_auth.php'; 
+include 'db.php';
 
+// Fetch imaginile din tabelul de galerie + numele santierului aferent
+$sql = "
+    SELECT wg.image_path, w.name as worksite_name 
+    FROM worksite_gallery wg 
+    JOIN worksites w ON wg.worksite_id = w.id
+";
+$result = $conn->query($sql);
+$images = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+?>
+<!DOCTYPE html>
 <html lang="ro">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkForce</title>
+    <title>WorkForce - Galerie</title>
     <link rel="icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -22,43 +33,28 @@
     <main>
         <section class="slider-section">
             <h2>Galerie șantiere</h2>
+            
+            <?php if(empty($images)): ?>
+                <p style="text-align: center;">Nu exista imagini incarcate in galeria niciunui santier.</p>
+            <?php else: ?>
+            
             <div class="slider">
                 <div class="slider-main">
-                    <div class="slide active-slide" id="slide1">
-                        <img src="assets/santier1.jpg" alt="Șantier1">
-                        <p class="slide-caption">Santier 1</p>
-                    </div>
-                    <div class="slide" id="slide2">
-                        <img src="assets/santier2.jpg" alt="Șantier1">
-                        <p class="slide-caption">Santier 2</p>
-                    </div>
-                    <div class="slide" id="slide3">
-                        <img src="assets/santier3.jpg" alt="Șantier1">
-                        <p class="slide-caption">Santier 3</p>
-                    </div>
-                    <div class="slide" id="slide4">
-                        <img src="assets/santier4.jpg" alt="Șantier1">
-                        <p class="slide-caption">Santier 4</p>
-                    </div>
+                    <?php foreach($images as $index => $img): ?>
+                        <div class="slide <?php echo $index === 0 ? 'active-slide' : ''; ?>" id="slide<?php echo $index + 1; ?>">
+                            <img src="assets/<?php echo htmlspecialchars($img['image_path']); ?>" alt="Santier">
+                            <p class="slide-caption"><?php echo htmlspecialchars($img['worksite_name']); ?></p>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="slider-thumbnails">
-                    <a href="#slide1" class="thumbnail-link active-thumbnail">
-                        <img src="assets/santier1.jpg" alt="Thumbnail 1">
-                        <span>Santier 1</span>
-                    </a>
-                    <a href="#slide2" class="thumbnail-link">
-                        <img src="assets/santier2.jpg" alt="Thumbnail 2">
-                        <span>Santier 2</span>
-                    </a>
-                    <a href="#slide3" class="thumbnail-link">
-                        <img src="assets/santier3.jpg" alt="Thumbnail 3">
-                        <span>Santier 3</span>
-                    </a>
-                    <a href="#slide4" class="thumbnail-link">
-                        <img src="assets/santier4.jpg" alt="Thumbnail 4">
-                        <span>Santier 4</span>
-                    </a>
+                    <?php foreach($images as $index => $img): ?>
+                        <a href="#slide<?php echo $index + 1; ?>" class="thumbnail-link <?php echo $index === 0 ? 'active-thumbnail' : ''; ?>">
+                            <img src="assets/<?php echo htmlspecialchars($img['image_path']); ?>" alt="Thumbnail">
+                            <span><?php echo htmlspecialchars($img['worksite_name']); ?></span>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="control-panel">
@@ -69,7 +65,6 @@
 
                     <label class="control-label">
                         Viteză:
-                        
                         <select id="interval-select">
                             <option value="1000" selected>1 secundă</option>
                             <option value="3000">3 secunde</option>
@@ -79,37 +74,35 @@
 
                     <button id="play-pause-button">Rulează</button>
                 </div>
-                
             </div>
 
             <div id="fallingSlider">
+                <div id="vertical-slide-container">
+                    <div id="prev-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-up"></i></div>
 
-            <div id="vertical-slide-container">
-                <div id="prev-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-up"></i></div>
+                    <div id="images-wrapper">
+                        <?php foreach($images as $img): ?>
+                            <img src="assets/<?php echo htmlspecialchars($img['image_path']); ?>" alt="Santier">
+                        <?php endforeach; ?>
+                        
+                        <video src="assets/worksite.mp4" autoplay muted loop></video>
+                    </div>
 
-                <div id="images-wrapper">
-                    <img src="assets/santier1.jpg" alt="santier1">
-                    <img src="assets/santier2.jpg" alt="santier2">
-                    <img src="assets/santier3.jpg" alt="santier3">
-                    <img src="assets/santier4.jpg" alt="santier4">
-                    <video src="assets/worksite.mp4" alt="worksite" autoplay muted></video>
+                    <div id="next-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-down"></i></div>
                 </div>
 
-                <div id="next-arrow" class="slider-arrow"><i class="fa-solid fa-chevron-down"></i></div>
-            </div>
+                <div class="control-panel">
+                    <label for="imgCount">Nr. de imagini:</label>
+                    <input id="imgCount" type="number" name="imgCount" value="2" min="1" max="5" placeholder="Nr. de imagini">
 
-            <div class="control-panel">
-                <label for="imgCount">Nr. de imagini:</label>
-                <input id="imgCount" type="number" name="imgCount" value="2" min="1" max="5" placeholder="Nr. de imagini">
+                    <label for="speedCount">Nr. de secunde:</label>
+                    <input id="speedCount" type="number" name="speedCount" value="1" min="1" max="5" step="1" placeholder="Nr. de secunde">
 
-                <label for="speedCount">Nr. de secunde:</label>
-                <input id="speedCount" type="number" name="speedCount" value="1" min="1" max="5" step="1" placeholder="Nr. de secunde">
-
-                <button id="startSlider">Aplică</button>
+                    <button id="startSlider">Aplică</button>
+                </div>
             </div>
             
-        </div>
-
+            <?php endif; ?>
         </section>
         
     </main>
